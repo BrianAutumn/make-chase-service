@@ -1,0 +1,80 @@
+name: Serverless Deploy
+
+on:
+  workflow_dispatch:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
+
+jobs:
+  pre-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: 'Block Concurrent Executions'
+        uses: softprops/turnstyle@v1
+        with:
+          poll-interval-seconds: 10
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  deploy:
+    needs: pre-deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - name: Get current time
+      uses: srfrnk/current-time@master
+      id: time
+      with:
+        format: LLLL
+        utcOffset: ${{ secrets.UTC_OFFSET }}
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Replace tokens
+      uses: cschleiden/replace-tokens@v1
+      with:
+        tokenPrefix: '##'
+        tokenSuffix: '##'
+        files: '["**/*.js","**/*.json","**/*.ts"]'
+      env:
+        BUILD_NUMBER: ${{ github.run_number }}
+        BUILD_DATE: ${{ steps.time.outputs.formattedTime }}
+        PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
+    - name: Get dependencies
+      run: npm ci
+    - name: Serverless deploy
+      uses: serverless/github-action@master
+      with:
+        args: deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
+    - name: Publish SNS topic success
+      if: ${{ success() }}
+      uses: nothingalike/sns-publish-topic@v1.6
+      with:
+        MESSAGE: "${{ github.repository }} '${{ github.workflow }}.${{ github.run_number }}' successful"
+        TOPIC_ARN: ${{ secrets.SNS_ARN }}
+      env:
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    - name: Publish SNS topic failure
+      if: ${{ !success() }}
+      uses: nothingalike/sns-publish-topic@v1.6
+      with:
+        MESSAGE: "${{ github.repository }} '${{ github.workflow }}.${{ github.run_number }}' failure"
+        TOPIC_ARN: ${{ secrets.SNS_ARN }}
+      env:
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      

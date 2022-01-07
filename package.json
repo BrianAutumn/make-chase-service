@@ -1,0 +1,32 @@
+{
+  "name": "make-chase-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bjtowne/make-chase-service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bjtowne/make-chase-service/issues"
+  },
+  "homepage": "https://github.com/Bjtowne/make-chase-service#readme",
+  "dependencies": {
+    "apollo-server-lambda": "^3.6.1",
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1052.0",
+    "aws-xray-sdk": "^3.3.4",
+    "body-parser": "^1.19.1",
+    "express": "^4.17.2",
+    "graphql": "^16.2.0",
+    "graphql-type-json": "^0.3.2",
+    "mongodb": "^4.3.0",
+    "mongoose": "^6.1.5",
+    "serverless-http": "^2.7.0"
+  }
+}
