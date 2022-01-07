@@ -4,7 +4,7 @@ export const Tokens = {
     isOffline: process.env.IS_OFFLINE,
     region: process.env.AWS_REGION,
     stage: process.env.AWS_STAGE,
-    testDBConnection: '##PROD_DB_URL##',
-    liveDBConnection: '',
-    db: 'TheDeepDarkWeb'
+    testDBConnection: 'mongodb+srv://Applications:9SmdFHcZe1ze0qn8@cluster0.r1fpk.mongodb.net/MakeChaseTest?retryWrites=true&w=majority',
+    liveDBConnection: '##PROD_DB_URL##',
+    db: 'MakeChase'
 };

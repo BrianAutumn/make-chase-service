@@ -28,5 +28,9 @@
     "mongodb": "^4.3.0",
     "mongoose": "^6.1.5",
     "serverless-http": "^2.7.0"
+  },
+  "devDependencies": {
+    "serverless-plugin-tracing": "^2.0.0",
+    "serverless-tag-api-gateway": "^1.0.0"
   }
 }
