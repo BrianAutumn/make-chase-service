@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run-offline": "sls offline"
   },
   "repository": {
     "type": "git",
@@ -30,7 +30,9 @@
     "serverless-http": "^2.7.0"
   },
   "devDependencies": {
+    "serverless-offline": "^8.3.1",
     "serverless-plugin-tracing": "^2.0.0",
+    "serverless-plugin-typescript": "^2.1.0",
     "serverless-tag-api-gateway": "^1.0.0"
   }
 }

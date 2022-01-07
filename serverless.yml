@@ -10,6 +10,9 @@ custom:
   serverless-offline:
     noPrependStageInUrl: true
     printOutput: true
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
 
 package:
   include:
@@ -18,10 +21,12 @@ package:
 plugins:
   - serverless-plugin-tracing
   - serverless-tag-api-gateway
+  - serverless-plugin-typescript
+  - serverless-offline
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs12.x
   stage: dev
   region: us-east-1
   tracing: true

@@ -1,4 +1,4 @@
 import Serverless from 'serverless-http';
 import App from './app';
 
-module.exports.handler = Serverless(App);
+export const handler = Serverless(App);

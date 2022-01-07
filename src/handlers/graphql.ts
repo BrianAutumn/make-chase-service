@@ -9,4 +9,10 @@ const server = new ApolloServer({
     playground: true,
     introspection: true,
 });
-export const GraphqlHandler = server.createHandler();
+
+const graphqlHandler = server.createHandler();
+
+export function handler() {
+    return graphqlHandler(...arguments);
+}
+
