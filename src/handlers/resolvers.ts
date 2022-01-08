@@ -83,7 +83,7 @@ export const Resolvers = {
             }
 
             // we should generate map right about now
-            game.map = await utils.generate_base_map()
+            game.map = await utils.generate_base_map(game)
 
             game.started = true;
 
@@ -118,7 +118,7 @@ export const Resolvers = {
                 db_actions.push(action);
             }
 
-            utils.process_actions(db_actions);
+            await utils.process_actions(db_actions);
 
             game.save();
 

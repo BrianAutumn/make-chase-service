@@ -20,8 +20,7 @@ const ConnectionSchema = new mongoose.Schema({
 export const Connection = mongoose.models.Connection || mongoose.model('Connection', ConnectionSchema);
 
 const MapSchema = new mongoose.Schema({
-    hider_id: {type:Number, required: true},
-    seeker_id: {type:Number, required: true}
+    type: {type:String, required: true},
 })
 export const Map = mongoose.models.Map || mongoose.model('Map', MapSchema);
 
