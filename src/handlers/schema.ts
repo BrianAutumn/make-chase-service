@@ -9,8 +9,9 @@ export const Schema = gql`
 
     type Mutation {
         makeGame(game_type: String): String,
-        joinGame(game_id: Int, role: String): String,
-        moveToNode(game_id: String, node_id: String): String,
+        joinGame(game_id: String, role: String): String,
+        startGame(game_id: String): String,
+        moveToNode(game_id: String, node_id: String, role:String): String,
         burnPath(game_id: String, path_id: String): String,
         endTurn(game_id: String): String,
     }
@@ -23,5 +24,7 @@ export const Schema = gql`
     type Game {
         game_id: String,
         map_id: Int,
+        hider_id: String,
+        seeker_id: String
     }
 `;

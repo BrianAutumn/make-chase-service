@@ -39,10 +39,18 @@ const MapSchema = new mongoose.Schema({
 })
 export const Map = mongoose.models.Map || mongoose.model('Map', MapSchema);
 
+const PlayerSchema = new mongoose.Schema({
+    role: {type:String, required: true},
+    node_id: {type:mongoose.Types.ObjectId, required:false},
+})
+export const Player = mongoose.models.Player || mongoose.model('Player', PlayerSchema);
+
 const GameSchema = new mongoose.Schema({
-    map_id: {type:Number, required: true},
-    hider_id: {type:Number, required: true},
-    seeker_id: {type:Number, required: true}
+    map_id: {type:mongoose.Types.ObjectId, required: false},
+    hider_id: {type:mongoose.Types.ObjectId, required: false},
+    seeker_id: {type:mongoose.Types.ObjectId, required: false},
+    turn: {type:String, required: true},
+    started: {type:Boolean, required: true}
 })
 export const Game = mongoose.models.Game || mongoose.model('Game', GameSchema);
 
