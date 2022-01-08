@@ -22,6 +22,7 @@ const loggingOptions = {
 const server = new ApolloServer({
   typeDefs: Schema,
   resolvers: Resolvers,
+  introspection: true,
   plugins: [
     ApolloServerPluginLandingPageGraphQLPlayground(),
     ApolloLogPlugin(loggingOptions) as any
