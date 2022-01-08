@@ -10,9 +10,7 @@ const server = new ApolloServer({
     typeDefs: Schema,
     resolvers: Resolvers,
     plugins: [
-        process.env.NODE_ENV === 'production'
-            ? ApolloServerPluginLandingPageDisabled()
-            : ApolloServerPluginLandingPageGraphQLPlayground(),
+        ApolloServerPluginLandingPageGraphQLPlayground()
     ]
 });
 
