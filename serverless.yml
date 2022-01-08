@@ -9,7 +9,7 @@ custom:
     thedeepdarkweb: 'serverless-auto'
   serverless-offline:
     noPrependStageInUrl: true
-    printOutput: true
+    printOutput: false
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true

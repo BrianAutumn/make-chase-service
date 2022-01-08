@@ -7,6 +7,7 @@ const url = Tokens.isOffline ? Tokens.testDBConnection : Tokens.liveDBConnection
 
 // mongoose.connect is async, must be called in async function and must be awaited before interacting with mongoose models
 export async function initMongo(){
+    console.log("MongoDB Connection String: ", url);
     await mongoose.connect(url);
 }
 
@@ -53,4 +54,13 @@ const GameSchema = new mongoose.Schema({
     started: {type:Boolean, required: true}
 })
 export const Game = mongoose.models.Game || mongoose.model('Game', GameSchema);
+
+const ActionSchema = new mongoose.Schema({
+    game: {type:GameSchema, required: true},
+    player: {type:PlayerSchema, required: true},
+    type: {type:String, required: true},
+    options: {type:String, required: true},
+    timestamp: {type:Number, required: true}
+})
+export const Action = mongoose.models.Action || mongoose.model('Action', ActionSchema);
 

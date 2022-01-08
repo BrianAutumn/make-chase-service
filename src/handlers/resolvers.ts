@@ -1,6 +1,7 @@
 import GraphQLJSON, {GraphQLJSONObject} from "graphql-type-json";
 import * as mongoose from "mongoose";
 import * as dbschemas from "../dao/DBSchemas";
+import * as utils from "../resources/utils";
 
 export const Resolvers = {
 
@@ -82,6 +83,7 @@ export const Resolvers = {
             }
 
             // we should generate map right about now
+            game.map = await utils.generate_base_map()
 
             game.started = true;
 
@@ -90,8 +92,37 @@ export const Resolvers = {
             return "success";
         },
 
-        takeTurn: async (parent, {game_id, user_id, actions}) => {
-            return String(game_id) + " " + String(user_id) + " " + String(actions);
+        takeTurn: async (parent, {game_id, player_id, actions}) => {
+            await dbschemas.initMongo();
+
+            const game = await dbschemas.Game.findById(game_id);
+
+            if (!game.started) {throw "Game has not yet begun."}
+
+            const player = await dbschemas.Player.findById(player_id);
+
+            const now = Date.now(); //moment when action was taken
+
+            var db_actions = [];
+
+            for (let idx = 0; idx < actions.length; idx++) {
+                const input_action = actions[idx];
+                const action = new dbschemas.Action({
+                    'game': game,
+                    'player': player,
+                    'type': input_action['type'],
+                    'options': input_action['options'],
+                    'timestamp': now,
+                })
+                action.save();
+                db_actions.push(action);
+            }
+
+            utils.process_actions(db_actions);
+
+            game.save();
+
+            return actions[0]['type'];
         }
 
     }

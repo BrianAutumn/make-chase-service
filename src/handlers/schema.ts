@@ -11,7 +11,7 @@ export const Schema = gql`
         makeGame(game_type: String): String,
         joinGame(game_id: String, role: String): String,
         startGame(game_id: String): String,
-        takeTurn(game_id, user_id, actions: [Action!]!): String
+        takeTurn(game_id: String, player_id: String, actions: [Action]): String
     }
     
     type Example {
@@ -19,7 +19,7 @@ export const Schema = gql`
         time: Float
     }
 
-    type Action {
+    input Action {
         type: String,
         options: String,
     }
