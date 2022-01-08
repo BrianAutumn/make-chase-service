@@ -20,8 +20,6 @@ export const Resolvers = {
 
     Mutation: {
         makeGame: async (parent, {game_type}) => {
-            dbschemas.initMongo()
-
             const game = new dbschemas.Game({'game_id': 0})
 
             return game.game_id
@@ -39,7 +37,7 @@ export const Resolvers = {
             return "success"
         },
 
-        endTurn: async (parent, {game_id}) {
+        endTurn: async (parent, {game_id}) => {
             return "success"
         }
     }

@@ -3,10 +3,7 @@ import {Tokens} from "../resources/tokens";
 
 const url = Tokens.isOffline ? Tokens.testDBConnection : Tokens.liveDBConnection;
 
-export async function initMongo(){
-    console.log('MongoDB URL: ', url);
-    await mongoose.connect(url);
-}
+mongoose.connect(url);
 
 const ConnectionSchema = new mongoose.Schema({
     connectionId:{type:String,required:true},
