@@ -16,11 +16,15 @@ export const Resolvers = {
 
             const game = await dbschemas.Game.findById(game_id);
 
+            const map_id = game.map ? game.map._id : null;
+            const hider_id = game.hider ? game.hider._id : null;
+            const seeker_id = game.seeker ? game.seeker._id : null;
+
             return {
                 'game_id': game._id,
-                'map_id': game.map_id,
-                'hider_id': game.hider_id,
-                'seeker_id': game.seeker_id,
+                'map_id': map_id,
+                'hider_id': hider_id,
+                'seeker_id': seeker_id,
             }
         },
 
@@ -35,7 +39,7 @@ export const Resolvers = {
         makeGame: async (parent, {game_type}) => {
             await dbschemas.initMongo();
 
-            const new_game = new dbschemas.Game({'turn': 'hider', 'game_started': false});
+            const new_game = new dbschemas.Game({'turn': 'hider', 'started': false});
             new_game.save();
 
             return new_game._id;
@@ -45,25 +49,25 @@ export const Resolvers = {
             await dbschemas.initMongo();
 
             const game = await dbschemas.Game.findById(game_id);
+            console.log('seeker ', game.seeker);
 
-            if (role == 'seeker' && game.seeker_id != null) {
+            if (role == 'seeker' && game.seeker) {
                 throw "Seeker has already joined the game.";
             }
-            if (role == 'hider' && game.hider_id != null) {
+            if (role == 'hider' && game.hider) {
                 throw "Hider has already joined the game.";
             }
 
             const player = new dbschemas.Player({'role': role})
 
             if (role == 'hider') {
-                game.hider_id = player._id;
+                game.hider = player;
             }
             if (role == 'seeker') {
-                game.seeker_id = player._id;
+                game.seeker = player;
             }
 
             game.save();
-            player.save();
 
             return player.role;
         },
@@ -73,7 +77,7 @@ export const Resolvers = {
 
             const game = await dbschemas.Game.findById(game_id);
 
-            if (game.hider_id == null || game.seeker_id == null) {
+            if (game.hider == null || game.seeker == null) {
                 throw "Not enough players to start the game.";
             }
 
@@ -86,28 +90,9 @@ export const Resolvers = {
             return "success";
         },
 
-        moveToNode: async (parent, {game_id, node_id, role}) => {
-            await dbschemas.initMongo();
-
-            const game = await dbschemas.Game.findById(game_id);
-            if (game.started == false) {throw "Game has not started yet."}
-
-            return "success"
-        },
-
-        burnPath: async (parent, {game_id, path_id}) => {
-            await dbschemas.initMongo();
-
-            const game = await dbschemas.Game.findById(game_id);
-            if (game.started == false) {throw "Game has not started yet."}
-
-            return "success"
-        },
-
-        endTurn: async (parent, {game_id}) => {
-            await dbschemas.initMongo();
-
-            return "success"
+        takeTurn: async (parent, {game_id, user_id, actions}) => {
+            return String(game_id) + " " + String(user_id) + " " + String(actions);
         }
+
     }
 };

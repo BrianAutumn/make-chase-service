@@ -11,14 +11,17 @@ export const Schema = gql`
         makeGame(game_type: String): String,
         joinGame(game_id: String, role: String): String,
         startGame(game_id: String): String,
-        moveToNode(game_id: String, node_id: String, role:String): String,
-        burnPath(game_id: String, path_id: String): String,
-        endTurn(game_id: String): String,
+        takeTurn(game_id, user_id, actions: [Action!]!): String
     }
     
     type Example {
         name: Float,
         time: Float
+    }
+
+    type Action {
+        type: String,
+        options: String,
     }
 
     type Game {
