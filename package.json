@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Bjtowne/make-chase-service#readme",
   "dependencies": {
+    "apollo-server-core": "^3.6.1",
     "apollo-server-lambda": "^3.6.1",
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1052.0",
@@ -27,7 +28,8 @@
     "graphql-type-json": "^0.3.2",
     "mongodb": "^4.3.0",
     "mongoose": "^6.1.5",
-    "serverless-http": "^2.7.0"
+    "serverless-http": "^2.7.0",
+    "typescript": "^4.5.4"
   },
   "devDependencies": {
     "serverless-offline": "^8.3.1",

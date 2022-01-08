@@ -1,18 +1,20 @@
 import {ApolloServer} from 'apollo-server-lambda';
 import {Schema} from "./schema";
 import {Resolvers} from "./resolvers";
+import {
+    ApolloServerPluginLandingPageDisabled,
+    ApolloServerPluginLandingPageGraphQLPlayground
+} from "apollo-server-core";
 
 const server = new ApolloServer({
     typeDefs: Schema,
     resolvers: Resolvers,
-
-    playground: true,
-    introspection: true,
+    plugins: [
+        process.env.NODE_ENV === 'production'
+            ? ApolloServerPluginLandingPageDisabled()
+            : ApolloServerPluginLandingPageGraphQLPlayground(),
+    ]
 });
 
-const graphqlHandler = server.createHandler();
 
-export function handler() {
-    return graphqlHandler(...arguments);
-}
-
+export const handler = server.createHandler();
