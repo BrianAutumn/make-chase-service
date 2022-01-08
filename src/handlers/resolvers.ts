@@ -16,6 +16,7 @@ export const Resolvers = {
             await dbschemas.initMongo();
 
             const game = await dbschemas.Game.findById(game_id);
+            console.log('Game map id: ', game.map._id);
 
             const map_id = game.map ? game.map._id : null;
             const hider_id = game.hider ? game.hider._id : null;
@@ -41,7 +42,7 @@ export const Resolvers = {
             await dbschemas.initMongo();
 
             const new_game = new dbschemas.Game({'turn': 'hider', 'started': false});
-            new_game.save();
+            await new_game.save();
 
             return new_game._id;
         },
@@ -68,7 +69,7 @@ export const Resolvers = {
                 game.seeker = player;
             }
 
-            game.save();
+            await game.save();
 
             return player.role;
         },
@@ -83,11 +84,11 @@ export const Resolvers = {
             }
 
             // we should generate map right about now
-            game.map = await utils.generate_base_map(game)
+            await utils.generate_base_map(game);
 
             game.started = true;
 
-            game.save();
+            await game.save();
 
             return "success";
         },
@@ -114,13 +115,12 @@ export const Resolvers = {
                     'options': input_action['options'],
                     'timestamp': now,
                 })
-                action.save();
                 db_actions.push(action);
             }
 
-            await utils.process_actions(db_actions);
+            await utils.process_actions(game, db_actions);
 
-            game.save();
+            await game.save();
 
             return actions[0]['type'];
         }

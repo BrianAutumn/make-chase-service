@@ -19,24 +19,58 @@ export async function generate_base_map(game) {
     const path5 = new dbschemas.Path({'first_node': node2, 'second_node': node3, 'is_broken': false, 'map': map})
 
     game.map = map;
-    map.save();
-    game.save();
+    game.hider.node = node0;
+    game.seeker.node = node3;
+    await map.save();
+    await game.save();
 
-    node0.save();
-    node1.save();
-    node2.save();
-    node3.save();
+    await node0.save();
+    await node1.save();
+    await node2.save();
+    await node3.save();
 
-    path0.save();
-    path1.save();
-    path2.save();
-    path3.save();
-    path4.save();
-    path5.save();
+    await path0.save();
+    await path1.save();
+    await path2.save();
+    await path3.save();
+    await path4.save();
+    await path5.save();
+}
+
+export async function process_actions(game, actions) {
+
+    for (var idx = 0; idx < actions.length; idx++) {
+        const current_action = actions[idx];
+        await process_action(game, current_action);
+    }
 
     return null;
 }
 
-export async function process_actions(actions) {
-    return null;
+export async function process_action(game, action) {
+    if (action.type == 'move') {
+        if(!action.player.node) {throw `Player (${action.player.role}) has not been placed on the map yet.`}
+        const target_node_id = action.options;
+        const target_node = await dbschemas.Node.findById(target_node_id);
+
+        if(action.player.node == target_node) {throw "Player attempting to move to node they are currently on."}
+
+        const map_paths = await dbschemas.Path.find({'map': game.map, 'broken': false});
+        // const num_paths_connecting = dbschemas.Path.find({'map': game.map, 'first_node': action.player.node, 'second_node': target_node, 'broken': false}).count() + 
+        //         dbschemas.Path.find({'map': game.map, 'first_node': action.player.node, 'second_node': target_node, 'broken': false}).count();
+
+        var path_count = 0;
+        await map_paths.countDocuments({'first_node': action.player.node, 'second_node': target_node}, function (err, count) {
+            path_count += count;
+        });
+        await map_paths.countDocuments({'first_node': target_node, 'second_node': action.player.node}, function (err, count) {
+            path_count += count;
+        });
+        if (path_count == 0) {throw "Attempted move: No unbroken path connects player to the destination node."}
+
+    }
+    else if (action.type == 'burn') {
+        if (action.player != game.seeker) {throw "Only seeker can burn a path."}
+        const node_id = action.options;
+    }
 }
