@@ -3,9 +3,7 @@ import {Tokens} from "../resources/tokens";
 
 const url = Tokens.isOffline ? Tokens.testDBConnection : Tokens.liveDBConnection;
 
-export async function initMongo(){
-    await mongoose.connect(url);
-}
+mongoose.connect(url);
 
 const ConnectionSchema = new mongoose.Schema({
     connectionId:{type:String,required:true},
@@ -13,3 +11,9 @@ const ConnectionSchema = new mongoose.Schema({
     establishedTS:{type:Number,required:true}
 })
 export const Connection = mongoose.model('Connection', ConnectionSchema);
+
+const DummySchema = new mongoose.Schema({
+    name:{type:String,required:true},
+    phrase:{type:String,required:false,default:''}
+})
+export const Dummy = mongoose.model('Dummy', DummySchema);

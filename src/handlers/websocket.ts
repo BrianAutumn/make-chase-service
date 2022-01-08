@@ -7,9 +7,9 @@ import {setupClient, createConnection, deleteConnection, subscribe} from "../ser
  * @param {Context} context
  * @returns {Promise<void>}
  */
-export async function connect(event , context ) {
-    setupClient(event.requestContext.apiId);
-    await createConnection(event.requestContext.connectionId);
+export async function connect(event, context) {
+  setupClient(event.requestContext.apiId);
+  await createConnection(event.requestContext.connectionId);
 }
 
 /**
@@ -19,8 +19,8 @@ export async function connect(event , context ) {
  * @returns {Promise<void>}
  */
 export async function disconnect(event, context) {
-    setupClient(event.requestContext.apiId);
-    await deleteConnection(event.requestContext.connectionId);
+  setupClient(event.requestContext.apiId);
+  await deleteConnection(event.requestContext.connectionId);
 }
 
 /**
@@ -30,7 +30,7 @@ export async function disconnect(event, context) {
  * @returns {Promise<void>}
  */
 export async function defaulter(event, context) {
-    setupClient(event.requestContext.apiId);
+  setupClient(event.requestContext.apiId);
 }
 
 /**
@@ -40,12 +40,12 @@ export async function defaulter(event, context) {
  * @returns {Promise<void>}
  */
 export async function subscribe(event, context) {
-    setupClient(event.requestContext.apiId);
-    const body = JSON.parse(event.body);
-    let success = false;
+  setupClient(event.requestContext.apiId);
+  const body = JSON.parse(event.body);
+  let success = false;
 
-    if (body.userId) {
-        await subscribe(event.requestContext.connectionId, body.userId);
-        success = true;
-    }
+  if (body.userId) {
+    await subscribe(event.requestContext.connectionId, body.userId);
+    success = true;
+  }
 }
