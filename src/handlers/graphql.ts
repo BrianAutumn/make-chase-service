@@ -2,7 +2,6 @@ import {ApolloServer} from 'apollo-server-lambda';
 import {Schema} from "./schema";
 import {Resolvers} from "./resolvers";
 import {
-    ApolloServerPluginLandingPageDisabled,
     ApolloServerPluginLandingPageGraphQLPlayground
 } from "apollo-server-core";
 
