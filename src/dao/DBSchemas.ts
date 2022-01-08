@@ -4,6 +4,7 @@ import {Tokens} from "../resources/tokens";
 const url = Tokens.isOffline ? Tokens.testDBConnection : Tokens.liveDBConnection;
 
 mongoose.connect(url);
+console.log('DB Connection String',url);
 
 const ConnectionSchema = new mongoose.Schema({
     connectionId:{type:String,required:true},
