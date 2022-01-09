@@ -13,6 +13,11 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  dynamodb:
+    stages: api
+    start:
+      port: 8000
+      migrate: true
 
 package:
   include:
@@ -22,6 +27,7 @@ plugins:
   - serverless-plugin-tracing
   - serverless-tag-api-gateway
   - serverless-plugin-typescript
+  - serverless-dynamodb-local
   - serverless-offline
 
 provider:
@@ -40,12 +46,25 @@ provider:
         - "xray:PutTelemetryRecords"
       Resource:
         - "*"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - { "Fn::GetAtt": ["connectionsTable", "Arn" ] }
+        - { "Fn::GetAtt": ["subscriptionsTable", "Arn" ] }
   environment:
-    AWS_STAGE:
-      ${self:provider.stage}
+    AWS_STAGE: ${self:provider.stage}
+    SUBSCRIPTIONS_TABLE: subscriptions
+    CONNECTIONS_TABLE: connections
 
 functions:
   graphql:
+    name: graphql
     handler: src/handlers/graphql.handler
     events:
       - http:
@@ -57,26 +76,67 @@ functions:
           method: get
           cors: true
 
-  websocketConnect:
-    handler: src/handlers/websocket.connect
-    events:
-      - websocket:
-          route: $connect
+  websocket:
+      name: my-subscription-lambda
+      handler: src/handlers/websocket.handler
+      events:
+        - websocket:
+            route: $connect
+        - websocket:
+            route: $disconnect
+        - websocket:
+            route: $default
 
-  websocketDisconnect:
-    handler: src/handlers/websocket.disconnect
-    events:
-      - websocket:
-          route: $disconnect
-
-  websocketDefault:
-    handler: src/handlers/websocket.defaulter
-    events:
-      - websocket:
-          route: $default
-
-  websocketSubscribe:
-    handler: src/handlers/websocket.subscribe
-    events:
-      - websocket:
-          route: subscribe
+resources:
+  Resources:
+    # Table for tracking connections
+    connectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.CONNECTIONS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    # Table for tracking subscriptions
+    subscriptionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.SUBSCRIPTIONS_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: topic
+            AttributeType: S
+          - AttributeName: connectionId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: ConnectionIndex
+            KeySchema:
+              - AttributeName: connectionId
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+          - IndexName: TopicIndex
+            KeySchema:
+              - AttributeName: topic
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

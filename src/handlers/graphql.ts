@@ -1,10 +1,13 @@
 import {ApolloServer} from 'apollo-server-lambda';
-import {Schema} from "./schema";
 import {Resolvers} from "./resolvers";
 import {
   ApolloServerPluginLandingPageGraphQLPlayground
 } from "apollo-server-core";
 import {ApolloLogPlugin} from "apollo-log";
+import * as path from 'path';
+import * as fs from 'fs';
+
+const Schema = fs.readFileSync(path.join(__dirname, './schema.graphql'), 'utf-8');
 
 const loggingOptions = {
   events: {

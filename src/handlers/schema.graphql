@@ -1,0 +1,17 @@
+type Query {
+  example(name: String, phrase:String): Example
+}
+
+type Subscription {
+  alarm: Alarm
+}
+
+type Example {
+  name: String
+  time: Float
+  phrase: String
+}
+
+type Alarm {
+  time: Float
+}

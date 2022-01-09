@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run-offline": "sls offline"
+    "run-offline": "sls offline",
+    "run-local-DB": "sls dynamodb start"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   },
   "homepage": "https://github.com/Bjtowne/make-chase-service#readme",
   "dependencies": {
+    "@graphql-tools/schema": "^8.3.1",
     "apollo-log": "^1.1.0",
     "apollo-server-core": "^3.6.1",
     "apollo-server-lambda": "^3.6.1",
@@ -26,10 +28,12 @@
     "body-parser": "^1.19.1",
     "express": "^4.17.2",
     "graphql": "^16.2.0",
+    "graphql-lambda-subscriptions": "^5.2.0",
     "graphql-type-json": "^0.3.2",
     "mongodb": "^4.3.0",
     "mongoose": "^6.1.5",
     "serverless": "^2.70.0",
+    "serverless-dynamodb-local": "^0.2.40",
     "serverless-http": "^2.7.0",
     "typescript": "^4.5.4"
   },

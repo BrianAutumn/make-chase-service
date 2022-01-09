@@ -1,51 +1,22 @@
-import {APIGatewayEvent, Context} from "aws-lambda";
-import {setupClient, createConnection, deleteConnection, subscribe} from "../services/connection.service";
+import { makeServer } from 'graphql-lambda-subscriptions'
+import { makeExecutableSchema } from '@graphql-tools/schema'
 
-/**
- *
- * @param {APIGatewayEvent} event
- * @param {Context} context
- * @returns {Promise<void>}
- */
-export async function connect(event, context) {
-  setupClient(event.requestContext.apiId);
-  await createConnection(event.requestContext.connectionId);
-}
+import * as path from 'path';
+import * as fs from 'fs';
+import * as AWS from "aws-sdk";
+import {Resolvers} from "./resolvers";
 
-/**
- *
- * @param {APIGatewayEvent} event
- * @param {Context} context
- * @returns {Promise<void>}
- */
-export async function disconnect(event, context) {
-  setupClient(event.requestContext.apiId);
-  await deleteConnection(event.requestContext.connectionId);
-}
+const Schema = fs.readFileSync(path.join(__dirname, './schema.graphql'), 'utf-8');
 
-/**
- *
- * @param {APIGatewayEvent} event
- * @param {Context} context
- * @returns {Promise<void>}
- */
-export async function defaulter(event, context) {
-  setupClient(event.requestContext.apiId);
-}
+// define a schema and create a configured DynamoDB instance from aws-sdk
+// and make a schema with resolvers (maybe look at) '@graphql-tools/schema
 
-/**
- *
- * @param {APIGatewayEvent} event
- * @param {Context} context
- * @returns {Promise<void>}
- */
-export async function subscribe(event, context) {
-  setupClient(event.requestContext.apiId);
-  const body = JSON.parse(event.body);
-  let success = false;
+export const subscriptionServer = makeServer({
+  dynamodb: new AWS.DynamoDB(),
+  schema:makeExecutableSchema({
+    typeDefs:Schema,
+    resolvers:Resolvers
+  }),
+})
 
-  if (body.userId) {
-    await subscribe(event.requestContext.connectionId, body.userId);
-    success = true;
-  }
-}
+export const handler = subscriptionServer.webSocketHandler
