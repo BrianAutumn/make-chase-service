@@ -59,8 +59,8 @@ provider:
         - { "Fn::GetAtt": ["subscriptionsTable", "Arn" ] }
   environment:
     AWS_STAGE: ${self:provider.stage}
-    SUBSCRIPTIONS_TABLE: subscriptions
-    CONNECTIONS_TABLE: connections
+    SUBSCRIPTIONS_TABLE: graphql_subscriptions
+    CONNECTIONS_TABLE: graphql_connections
 
 functions:
   graphql:
