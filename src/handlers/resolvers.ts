@@ -1,15 +1,15 @@
 import {Dummy} from "../dao/DBSchemas";
-import { subscribe } from 'graphql-lambda-subscriptions'
-import {subscriptionServer} from "./websocket";
+import {DynamoDBEventStore, PubSub} from "aws-lambda-graphql";
+const eventStore = new DynamoDBEventStore();
+export const pubSub = new PubSub({ eventStore });
 
-// setInterval(() => {
-//   subscriptionServer.publish({
-//     topic: 'ALARM',
-//     payload: {
-//       time: Date.now(),
-//     },
-//   })
-// },60000)
+setInterval(() => {
+  pubSub.publish(
+    'ALARM',
+    {
+      time: Date.now(),
+    })
+},60000)
 
 export const Resolvers = {
 
@@ -25,11 +25,8 @@ export const Resolvers = {
   },
   Subscription: {
     alarm: {
-      subscribe: subscribe('ALARM'),
-      resolve: (event, args, context) => {
-        console.log('RESOLVING SUBSCRIPTION');
-        return {time:Date.now()};
-      }
+      subscribe: pubSub.subscribe('ALARM'),
+      resolve: (event) => event.time
     }
   }
 };
