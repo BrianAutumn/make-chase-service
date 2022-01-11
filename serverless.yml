@@ -89,7 +89,7 @@ provider:
 
 functions:
   wsHandler:
-    handler: src/handlers/graphql.handleWebSocket
+    handler: src/handlers/handleWebsocket.handler
     events:
       - websocket:
           route: $connect
@@ -98,7 +98,7 @@ functions:
       - websocket:
           route: $default
   eventProcessorHandler:
-    handler: src/handlers/graphql.handleEvents
+    handler: src/handlers/handleEvents.handler
     events:
       - stream:
           enabled: true
@@ -107,7 +107,7 @@ functions:
             Fn::GetAtt: [EventsDynamoDBTable, StreamArn]
   # this one is optional (if you want to support HTTP)
   httpHandler:
-    handler: src/handlers/graphql.handleHTTP
+    handler: src/handlers/handleHttp.handler
     events:
       - http:
           path: /graphql
