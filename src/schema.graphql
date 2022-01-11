@@ -1,0 +1,14 @@
+type Mutation {
+  broadcastMessage(message: String!): String!
+}
+
+type Query {
+  """
+  Dummy query so out server won't fail during instantiation
+  """
+  dummy: String!
+}
+
+type Subscription {
+  messageBroadcast: String!
+}
