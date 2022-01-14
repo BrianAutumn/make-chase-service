@@ -1,31 +1,45 @@
-# make-chase-service
+# chat-example-server
 
-First install all the npm packages for the project
+## How to use
 
-```
-npm install
-```
+### Build all packages
 
-The service uses the "serverless" framework to manage the serverless resources. To setup the repo you need to install serverless globally to your system.
+Run following command in project root
 
-To do this run the command:
-
-```
-npm install -g serverless
+```console
+yarn build
 ```
 
-If you are running on windows you also need to run
+### Install dependencies
 
-```
-Remove-Item alias:sls
-```
+In `chat-example-server` directory run following command
 
-if you are using powershell to get access to the serverless commands.
-
-You then need to install local dynamodb service. Do so by running the command:
-
-```
-sls dynamo db install
+```console
+yarn install
 ```
 
-You then need to run the "run-local-DB" script followed  by the "run-offline" script.
+### Local development
+
+For local development we'll use serverless-offline, serverless-dynamodb-local
+
+#### 1. Install local dynamodb
+
+If you run this for the first time, please install local dynamodb first using `yarn install:dynamodb` command.
+
+#### 2. Start local chat example server
+
+```console
+yarn start
+```
+
+### Deploy
+
+```console
+yarn deploy
+# or
+npm run deploy
+```
+
+#### Update websocket lambda uri in example app
+
+Update **REACT_APP_LAMBDA_WEBSOCKET_URI** inside `chat-example-app/.env` with your new endpoint from serverless deployment.

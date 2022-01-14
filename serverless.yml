@@ -1,51 +1,40 @@
-org: bjtowne
-app: make-chase
-service: make-chase-service
-
-frameworkVersion: '2'
+service: graphql-server-demo # NOTE: update this with your service name
 
 custom:
-  apiGatewayTags:
-    thedeepdarkweb: 'serverless-auto'
-  serverless-offline:
-    noPrependStageInUrl: true
-    printOutput: true
-  webpack:
-    webpackConfig: ./webpack.config.js
-    includeModules: true
   dynamodb:
-    stages: api
+    stages:
+      - dev
     start:
-      port: 8000
+      inMemory: true
       migrate: true
-
-package:
-  include:
-    - src/**
+      noStart: false
+  dynamodbStream:
+    host: localhost
+    port: 8000
+    # this fixes the problem with missing region
+    region: eu-central-1
+    pollForever: true
+    streams:
+      - table: Events
+        functions:
+          - dynamoDBStreamHandler
 
 plugins:
-  - serverless-plugin-tracing
-  - serverless-tag-api-gateway
-  - serverless-plugin-typescript
+  - serverless-webpack
   - serverless-dynamodb-local
+  - serverless-plugin-offline-dynamodb-stream
   - serverless-offline
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  stage: api
-  region: us-east-1
-  tracing: true
-  websocketsApiRouteSelectionExpression: $request.body.action
-  tags:
-    thedeepdarkweb: 'serverless-auto'
+  runtime: nodejs10.x
+  region: eu-central-1 # NOTE: change with your preferred region
+
   iamRoleStatements:
-    - Effect: "Allow"
+    - Effect: Allow
       Action:
-        - "xray:PutTraceSegments"
-        - "xray:PutTelemetryRecords"
-      Resource:
-        - "*"
+        - execute-api:ManageConnections
+      Resource: 'arn:aws:execute-api:*:*:*/development/POST/@connections/*'
     - Effect: Allow
       Action:
         - dynamodb:DeleteItem
@@ -53,10 +42,6 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
       Resource: !GetAtt ConnectionsDynamoDBTable.Arn
-    - Effect: Allow
-      Action:
-        - execute-api:ManageConnections
-      Resource: 'arn:aws:execute-api:*:*:*/development/POST/@connections/*'
     - Effect: Allow
       Action:
         - dynamodb:DescribeStream
@@ -84,12 +69,17 @@ provider:
         - dynamodb:GetItem
         - dynamodb:PutItem
       Resource: !GetAtt SubscriptionOperationsDynamoDBTable.Arn
-  environment:
-    AWS_STAGE: ${self:provider.stage}
 
 functions:
-  wsHandler:
-    handler: src/handlers/handleWebsocket.handler
+  httpHandler:
+    handler: src/index.handleHttp
+    events:
+      - http:
+          path: /
+          method: any
+          cors: true
+  webSocketHandler:
+    handler: src/index.handleWebSocket
     events:
       - websocket:
           route: $connect
@@ -97,22 +87,14 @@ functions:
           route: $disconnect
       - websocket:
           route: $default
-  eventProcessorHandler:
-    handler: src/handlers/handleEvents.handler
+  dynamoDBStreamHandler:
+    handler: src/index.handleDynamoDBStream
     events:
       - stream:
           enabled: true
           type: dynamodb
           arn:
             Fn::GetAtt: [EventsDynamoDBTable, StreamArn]
-  # this one is optional (if you want to support HTTP)
-  httpHandler:
-    handler: src/handlers/handleHttp.handler
-    events:
-      - http:
-          path: /graphql
-          method: any
-          cors: true
 
 resources:
   Resources:
@@ -129,7 +111,7 @@ resources:
           # connection id
           - AttributeName: id
             KeyType: HASH
-        # This one is optional (all connections have 2 hours of lifetime in ttl field but enabling TTL is up to you)
+        # This one is optional (all subscription operations have 2 hours of lifetime in ttl field but enabling TTL is up to you)
         TimeToLiveSpecification:
           AttributeName: ttl
           Enabled: true
@@ -150,7 +132,7 @@ resources:
             KeyType: HASH
           - AttributeName: subscriptionId
             KeyType: RANGE
-        # This one is optional (all subscriptions have 2 hours of lifetime in ttl field but enabling TTL is up to you)
+        # This one is optional (all subscription operations have 2 hours of lifetime in ttl field but enabling TTL is up to you)
         TimeToLiveSpecification:
           AttributeName: ttl
           Enabled: true
@@ -187,7 +169,7 @@ resources:
             AttributeType: S
         StreamSpecification:
           StreamViewType: NEW_IMAGE
-        # This one is optional (all events have 2 hours of lifetime in ttl field but enabling TTL is up to you)
+        # This one is optional (all subscription operations have 2 hours of lifetime in ttl field but enabling TTL is up to you)
         TimeToLiveSpecification:
           AttributeName: ttl
           Enabled: true

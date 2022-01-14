@@ -1,48 +1,33 @@
 {
-  "name": "make-chase-service",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "run-offline": "sls offline",
-    "run-local-DB": "sls dynamodb start"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Bjtowne/make-chase-service.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Bjtowne/make-chase-service/issues"
-  },
-  "homepage": "https://github.com/Bjtowne/make-chase-service#readme",
+  "name": "serverless-chat-example-server",
+  "private": true,
+  "version": "1.0.0-alpha.24",
   "dependencies": {
-    "@graphql-tools/schema": "^8.3.1",
-    "apollo-log": "^1.1.0",
-    "apollo-server-core": "^3.6.1",
-    "apollo-server-lambda": "^3.6.1",
-    "aws-lambda": "^1.0.7",
+    "@babel/core": "^7.16.7",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/preset-env": "^7.16.8",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
     "aws-lambda-graphql": "^1.0.0-alpha.24",
-    "aws-sdk": "^2.1053.0",
-    "aws-xray-sdk": "^3.3.4",
-    "body-parser": "^1.19.1",
-    "express": "^4.17.2",
-    "graphql": "15.8.0",
-    "graphql-lambda-subscriptions": "^5.2.0",
+    "graphql": "^15.5.0",
     "graphql-subscriptions": "^2.0.0",
-    "graphql-type-json": "^0.3.2",
-    "mongodb": "^4.3.0",
-    "mongoose": "^6.1.5",
-    "serverless": "^2.70.0",
-    "serverless-dynamodb-local": "^0.2.40",
-    "serverless-http": "^2.7.0",
-    "typescript": "^4.5.4"
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
-    "serverless-offline": "^8.3.1",
-    "serverless-plugin-tracing": "^2.0.0",
-    "serverless-plugin-typescript": "^2.1.0",
-    "serverless-tag-api-gateway": "^1.0.0"
+    "@types/aws-lambda": "^8.10.36",
+    "babel-loader": "^8.0.6",
+    "serverless": "^1.58.0",
+    "serverless-dynamodb-local": "^0.2.38",
+    "serverless-offline": "^5.12.1",
+    "serverless-plugin-offline-dynamodb-stream": "^1.0.19",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.41.4",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "scripts": {
+    "deploy": "sls deploy",
+    "install:dynamodb": "sls dynamodb install",
+    "start": "sls offline start",
+    "start:dynamodb": "sls dynamodb start"
   }
 }
