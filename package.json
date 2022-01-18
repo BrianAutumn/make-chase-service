@@ -9,6 +9,7 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "aws-lambda-graphql": "^1.0.0-alpha.24",
+    "copy-webpack-plugin": "^6.4.1",
     "graphql": "^15.5.0",
     "graphql-subscriptions": "^2.0.0",
     "ulid": "^2.3.0"

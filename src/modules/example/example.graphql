@@ -1,0 +1,22 @@
+enum MessageType {
+    greeting
+    test
+}
+
+type Message {
+    id: ID!
+    text: String!
+    type: MessageType!
+}
+
+type Mutation {
+    sendMessage(text: String!, type: MessageType = greeting): Message!
+}
+
+type Query {
+    serverTime: Float!
+}
+
+type Subscription {
+    messageFeed(type: MessageType): Message!
+}
