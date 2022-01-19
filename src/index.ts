@@ -3,16 +3,18 @@ import {
   Server,
 } from 'aws-lambda-graphql';
 import {connectionManager, subscriptionManager} from "./graphqlResources";
-import resolvers from './modules/example/example.resolver'
-import {readFileSync} from 'fs';
+import rawResolvers from './resolvers';
+const { mergeTypeDefs, mergeResolvers } = require('@graphql-tools/merge')
+const { loadFilesSync } = require('@graphql-tools/load-files')
 import {join} from 'path';
 
-const typeDefs = readFileSync(join(__dirname,'./modules/example/example.graphql')).toString();
+const typesArray = loadFilesSync(join(__dirname, './modules'), { recursive: true })
+const typeDefs = mergeTypeDefs(typesArray)
 
 const server = new Server({
   connectionManager,
   eventProcessor: new DynamoDBEventProcessor(),
-  resolvers,
+  resolvers:mergeResolvers(rawResolvers),
   subscriptionManager,
   // use serverless-offline endpoint in offline mode
   ...(process.env.IS_OFFLINE
