@@ -3,7 +3,7 @@ service: graphql-server-demo # NOTE: update this with your service name
 custom:
   dynamodb:
     stages:
-      - dev
+      - api
     start:
       inMemory: true
       migrate: true

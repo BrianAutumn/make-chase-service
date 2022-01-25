@@ -1,3 +1,4 @@
+notepad $profile
 # chat-example-server
 
 ## How to use
