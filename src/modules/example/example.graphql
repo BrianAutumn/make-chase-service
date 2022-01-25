@@ -4,9 +4,10 @@ enum MessageType {
 }
 
 type Message {
-    id: ID!
+    messageId: ID!
     text: String!
     type: MessageType!
+    timestamp: String!
 }
 
 type Mutation {
@@ -15,6 +16,7 @@ type Mutation {
 
 type Query {
     serverTime: Float!
+    messages:[Message]
 }
 
 type Subscription {

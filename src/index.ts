@@ -7,6 +7,7 @@ import rawResolvers from './resolvers';
 const { mergeTypeDefs, mergeResolvers } = require('@graphql-tools/merge')
 const { loadFilesSync } = require('@graphql-tools/load-files')
 import {join} from 'path';
+import {connect} from "./mongooseManager";
 
 const typesArray = loadFilesSync(join(__dirname, './modules'), { recursive: true })
 const typeDefs = mergeTypeDefs(typesArray)
@@ -30,3 +31,5 @@ const server = new Server({
 export const handleHttp = server.createHttpHandler();
 export const handleWebSocket = server.createWebSocketHandler();
 export const handleDynamoDBStream = server.createEventHandler();
+
+connect()

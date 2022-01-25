@@ -1,13 +1,15 @@
 import {ulid} from "ulid";
 import {withFilter} from "aws-lambda-graphql";
 import {pubSub} from "../../graphqlResources";
+import {MessageModel} from "../../data-models";
 
 type MessageType = 'greeting' | 'test';
 
 type Message = {
-  id: string;
+  messageId: string;
   text: string;
   type: MessageType;
+  timestamp: string;
 };
 
 type SendMessageArgs = {
@@ -18,8 +20,9 @@ type SendMessageArgs = {
 export default {
   Mutation: {
     async sendMessage(rootValue: any, { text, type }: SendMessageArgs) {
-      const payload: Message = { id: ulid(), text, type };
+      const payload: Message = { messageId: ulid(), text, type, timestamp:Date.now().toString() };
 
+      await new MessageModel(payload).save()
       await pubSub.publish('NEW_MESSAGE', payload);
 
       return payload;
@@ -27,6 +30,9 @@ export default {
   },
   Query: {
     serverTime: () => Date.now(),
+    messages: async() => {
+      return await MessageModel.find().exec();
+    }
   },
   Subscription: {
     messageFeed: {
