@@ -1,4 +1,4 @@
-service: graphql-server-demo # NOTE: update this with your service name
+service: make-chase-service
 
 custom:
   dynamodb:
@@ -11,8 +11,7 @@ custom:
   dynamodbStream:
     host: localhost
     port: 8000
-    # this fixes the problem with missing region
-    region: eu-central-1
+    region: eu-east-1
     pollForever: true
     streams:
       - table: Events
@@ -29,7 +28,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   stage: api
-  region: eu-central-1 # NOTE: change with your preferred region
+  region: eu-east-1
 
   iamRoleStatements:
     - Effect: Allow
