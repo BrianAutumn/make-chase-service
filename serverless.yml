@@ -11,7 +11,7 @@ custom:
   dynamodbStream:
     host: localhost
     port: 8000
-    region: eu-east-1
+    region: us-east-1
     pollForever: true
     streams:
       - table: Events
@@ -28,7 +28,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   stage: api
-  region: eu-east-1
+  region: us-east-1
 
   iamRoleStatements:
     - Effect: Allow
