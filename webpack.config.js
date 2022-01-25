@@ -11,10 +11,15 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|js|mjs)x?$/,
+        test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
+      }
     ],
   },
   resolve: {
