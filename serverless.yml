@@ -28,6 +28,7 @@ plugins:
 provider:
   name: aws
   runtime: nodejs14.x
+  stage: api
   region: eu-central-1 # NOTE: change with your preferred region
 
   iamRoleStatements:
