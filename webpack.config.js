@@ -18,10 +18,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.mjs', '.tsx', '.ts', '.js', '.jsx'],
-    alias:{
-      'src': path.resolve(__dirname, './src'),
-    }
+    extensions: ['.mjs', '.tsx', '.ts', '.js', '.jsx']
   },
   plugins: [
     new CopyPlugin({
