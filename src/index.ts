@@ -26,6 +26,7 @@ const server = new Server({
       }
     : {}),
   typeDefs,
+  introspection:true
 });
 
 export const handleHttp = server.createHttpHandler();
