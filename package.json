@@ -11,6 +11,7 @@
     "@graphql-tools/load-files": "^6.5.3",
     "@graphql-tools/merge": "^8.2.1",
     "aws-lambda-graphql": "^1.0.0-alpha.24",
+    "aws-sdk": "^2.1062.0",
     "copy-webpack-plugin": "^6.4.1",
     "graphql": "^15.5.0",
     "graphql-subscriptions": "^2.0.0",

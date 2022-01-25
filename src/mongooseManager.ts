@@ -2,7 +2,7 @@
 
 import {tokens} from "./tokens";
 
-const mongoose = require('mongoose');
+import * as mongoose from "mongoose";
 
 let conn = null;
 
