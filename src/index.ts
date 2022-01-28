@@ -24,7 +24,7 @@ const server = new Server({
           subscriptionEndpoint: 'ws://localhost:3001',
         },
       }
-    : {}),
+    : {playground: true}),
   typeDefs,
   introspection:true
 });

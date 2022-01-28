@@ -43,3 +43,5 @@ npm run deploy
 #### Update websocket lambda uri in example app
 
 Update **REACT_APP_LAMBDA_WEBSOCKET_URI** inside `chat-example-app/.env` with your new endpoint from serverless deployment.
+
+Remove-Item alias:sls

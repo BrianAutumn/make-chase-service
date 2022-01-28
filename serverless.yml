@@ -8,6 +8,9 @@ custom:
       inMemory: true
       migrate: true
       noStart: false
+  apiGatewayThrottling:
+    maxRequestsPerSecond: 1000
+    maxConcurrentRequests: 500
   dynamodbStream:
     host: localhost
     port: 8000
@@ -23,6 +26,7 @@ plugins:
   - serverless-dynamodb-local
   - serverless-plugin-offline-dynamodb-stream
   - serverless-offline
+  - serverless-api-gateway-throttling
 
 provider:
   name: aws

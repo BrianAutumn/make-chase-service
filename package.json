@@ -17,6 +17,7 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^8.2.0",
     "mongoose": "^6.1.8",
+    "serverless-api-gateway-throttling": "^1.2.2",
     "ulid": "^2.3.0"
   },
   "devDependencies": {
