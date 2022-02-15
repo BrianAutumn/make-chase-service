@@ -1,0 +1,7 @@
+type Mutation {
+    login(jwt: String!): LoginResult!
+}
+
+type LoginResult {
+    success:Boolean
+}

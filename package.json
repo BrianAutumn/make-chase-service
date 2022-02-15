@@ -13,6 +13,7 @@
     "aws-lambda-graphql": "^1.0.0-alpha.24",
     "aws-sdk": "^2.1062.0",
     "copy-webpack-plugin": "^6.4.1",
+    "google-auth-library": "^7.12.0",
     "graphql": "^15.5.0",
     "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^8.2.0",
@@ -35,7 +36,7 @@
   "scripts": {
     "deploy": "sls deploy",
     "install:dynamodb": "sls dynamodb install",
-    "start": "sls offline start",
+    "start": "sls offline start --disableCookieValidation",
     "start:dynamodb": "sls dynamodb start"
   }
 }
