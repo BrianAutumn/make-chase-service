@@ -9,14 +9,51 @@ import { loadFilesSync } from '@graphql-tools/load-files'
 import {join} from 'path';
 import {connect} from "./mongooseManager";
 import HttpHeadersPlugin from 'apollo-server-plugin-http-headers';
+import {gql} from 'apollo-server'
+import { makeExecutableSchema} from "@graphql-tools/schema";
+import {getDirective, MapperKind, mapSchema} from '@graphql-tools/utils'
+import {defaultFieldResolver} from "graphql";
+import {AuthenticationError} from "apollo-server-errors";
+import {decrypt} from "./utils/crypto.util";
 
 const typesArray = loadFilesSync(join(__dirname, './modules'), { recursive: true })
+typesArray.push(gql`directive @auth on FIELD_DEFINITION`)
 const typeDefs = mergeTypeDefs(typesArray)
+
+let schema = makeExecutableSchema({typeDefs,resolvers:mergeResolvers(rawResolvers)})
+
+//Auth Directive
+schema = mapSchema(schema, {
+    [MapperKind.OBJECT_FIELD]: (fieldConfig) => {
+      const authDirective = getDirective(schema, fieldConfig, 'auth')?.[0];
+      if (authDirective) {
+        const { resolve = defaultFieldResolver } = fieldConfig;
+        fieldConfig.resolve = async function (source, args, context, info) {
+          console.log('auth directive');
+          let session = context?.event?.headers?.cookie?.match(/(?<=session=).*?(?=$| |;)/g)[0]
+          console.log('session',session);
+          console.log('cookie',context?.event?.headers?.cookie)
+          if(!session){
+            throw new AuthenticationError('No Session')
+          }
+          let user;
+          try{
+            user = JSON.parse(decrypt(decodeURIComponent(session)))
+          } catch (e){
+            throw new AuthenticationError('Session Invalid')
+          }
+          context.user = user;
+          return await resolve(source, args, context, info);
+        }
+        return fieldConfig;
+      }
+    }
+});
 
 const server = new Server({
   connectionManager,
   eventProcessor: new DynamoDBEventProcessor(),
-  resolvers:mergeResolvers(rawResolvers) as any,
+  schema,
   plugins:[HttpHeadersPlugin],
   subscriptionManager,
   // use serverless-offline endpoint in offline mode
@@ -27,7 +64,6 @@ const server = new Server({
         },
       }
     : {playground: true}),
-  typeDefs,
   introspection:true,
   context: ({ event, context }) => {
     return {

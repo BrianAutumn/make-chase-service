@@ -19,7 +19,8 @@ type SendMessageArgs = {
 
 export default {
   Mutation: {
-    async sendMessage(rootValue: any, { text, type }: SendMessageArgs) {
+    async sendMessage(rootValue: any, { text, type }: SendMessageArgs, context) {
+      console.log(context);
       const payload: Message = { messageId: ulid(), text, type, timestamp:Date.now().toString() };
 
       await new MessageModel(payload).save()

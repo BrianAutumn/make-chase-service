@@ -11,7 +11,7 @@ type Message {
 }
 
 type Mutation {
-    sendMessage(text: String!, type: MessageType = greeting): Message!
+    sendMessage(text: String!, type: MessageType = greeting): Message! @auth
 }
 
 type Query {

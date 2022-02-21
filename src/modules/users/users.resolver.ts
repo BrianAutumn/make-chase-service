@@ -10,8 +10,8 @@ type LoginResult = {
 
 export default {
   Mutation: {
-    async login(rootValue: any, {jwt}: LoginArgs, context): Promise<any> {
-      console.log('context', context)
+    async login(rootValue: any, {jwt}: LoginArgs, context): Promise<LoginResult> {
+      console.log(context);
       let validateJWTResult = await validateJWT(JSON.parse(jwt));
       if (!validateJWTResult.success) {
         return {
