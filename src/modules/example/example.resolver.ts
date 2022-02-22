@@ -21,7 +21,7 @@ export default {
   Mutation: {
     async sendMessage(rootValue: any, { text, type }: SendMessageArgs, context) {
       console.log(context);
-      const payload: Message = { messageId: ulid(), text, type, timestamp:Date.now().toString() };
+      const payload: Message = { messageId: ulid(), text, type, timestamp:Date.now() };
 
       await new MessageModel(payload).save()
       await pubSub.publish('NEW_MESSAGE', payload);
