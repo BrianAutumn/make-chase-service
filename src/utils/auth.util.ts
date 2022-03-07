@@ -11,7 +11,6 @@ type ValidateJWTResult = {
 
 export async function validateJWT(jwt:any):Promise<ValidateJWTResult>{
   try{
-    console.log(jwt);
     if(jwt.clientId !== appConf.google.clientId){
       console.error(`Invalid ClientID! ${jwt.clientId}`)
       return {success:false};
@@ -21,9 +20,7 @@ export async function validateJWT(jwt:any):Promise<ValidateJWTResult>{
       audience: jwt.clientId
     });
     const payload = ticket.getPayload();
-    console.log('payload',payload);
     const userid = payload['sub'];
-    console.log(userid);
     let sessionDetails = {
       sub:payload.sub,
       iss:payload.iss,

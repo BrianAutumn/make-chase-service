@@ -29,10 +29,7 @@ schema = mapSchema(schema, {
       if (authDirective) {
         const { resolve = defaultFieldResolver } = fieldConfig;
         fieldConfig.resolve = async function (source, args, context, info) {
-          console.log('auth directive');
           let session = context?.event?.headers?.cookie?.match(/(?<=session=).*?(?=$| |;)/g)[0]
-          console.log('session',session);
-          console.log('cookie',context?.event?.headers?.cookie)
           if(!session){
             throw new AuthenticationError('No Session')
           }
@@ -42,7 +39,7 @@ schema = mapSchema(schema, {
           } catch (e){
             throw new AuthenticationError('Session Invalid')
           }
-          context.user = user;
+          context.currentUser = user;
           return await resolve(source, args, context, info);
         }
         return fieldConfig;
@@ -72,6 +69,19 @@ const server = new Server({
       setCookies: [],
       setHeaders: []
     };
+  },
+  subscriptions:{
+    onConnect(messagePayload, connection, event, context){
+      let currentUser;
+      if(messagePayload.authToken){
+        try{
+          currentUser = decrypt(messagePayload.authToken)
+        }catch (e){
+          throw new AuthenticationError('Session Invalid')
+        }
+      }
+      return {currentUser};
+    }
   }
 });
 

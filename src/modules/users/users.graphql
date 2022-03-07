@@ -2,6 +2,10 @@ type Mutation {
     login(jwt: String!): LoginResult!
 }
 
+type Query {
+    me: String
+}
+
 type LoginResult {
     success:Boolean
 }

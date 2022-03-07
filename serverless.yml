@@ -1,6 +1,8 @@
 service: make-chase-service
 
 custom:
+  serverless-offline:
+    disableCookieValidation: true
   dynamodb:
     stages:
       - api

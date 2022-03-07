@@ -9,7 +9,7 @@ type Message = {
   messageId: string;
   text: string;
   type: MessageType;
-  timestamp: string;
+  timestamp: number;
 };
 
 type SendMessageArgs = {
@@ -43,7 +43,7 @@ export default {
       },
       subscribe: withFilter(
         pubSub.subscribe('NEW_MESSAGE'),
-        (rootValue: Message, args: { type: null | MessageType }) => {
+        (rootValue: Message, args: { type: null | MessageType }, context) => {
           // this can be async too :)
           if (args.type == null) {
             return true;
