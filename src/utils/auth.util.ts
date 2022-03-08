@@ -6,7 +6,8 @@ const client = new OAuth2Client(appConf.google.clientId);
 
 type ValidateJWTResult = {
   success:boolean,
-  sessionToken?:string
+  sessionToken?:string,
+  payload?:any
 }
 
 export async function validateJWT(jwt:any):Promise<ValidateJWTResult>{
@@ -29,7 +30,8 @@ export async function validateJWT(jwt:any):Promise<ValidateJWTResult>{
     let sessionToken = encrypt(JSON.stringify(sessionDetails));
     return {
       success:true,
-      sessionToken
+      sessionToken,
+      payload
     };
   }catch (e){
     console.error(e);

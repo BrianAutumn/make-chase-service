@@ -1,13 +1,23 @@
 import {Schema, model, connection, Model} from 'mongoose';
 
 export const MessageModel = buildModel('Message', () => {
-  const messageSchema = new Schema({
+  const schema = new Schema({
     timestamp: {type:String, required:true},
     text: {type:String, required:true},
     type: {type:String, required:true},
     messageId: {type:String, required:true}
   });
-  return model('Message',messageSchema);
+  return model('Message',schema);
+})
+
+export const UserModel = buildModel('User', () => {
+  const schema = new Schema({
+    sub: {type:String, required:true},
+    iss: {type:String, required:true},
+    displayName: {type:String, required:true},
+    email: {type:String, required:true}
+  });
+  return model('User',schema);
 })
 
 /**
