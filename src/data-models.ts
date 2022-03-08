@@ -5,7 +5,7 @@ export const MessageModel = buildModel('Message', () => {
     timestamp: {type:String, required:true},
     text: {type:String, required:true},
     type: {type:String, required:true},
-    messageId: {type:String, required:true}
+    user: {type:Schema.Types.ObjectId, ref:'User', required:true}
   });
   return model('Message',schema);
 })
@@ -15,7 +15,8 @@ export const UserModel = buildModel('User', () => {
     sub: {type:String, required:true},
     iss: {type:String, required:true},
     displayName: {type:String, required:true},
-    email: {type:String, required:true}
+    email: {type:String, required:true},
+    created: {type:String,required:true}
   });
   return model('User',schema);
 })

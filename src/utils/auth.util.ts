@@ -1,6 +1,8 @@
 import {OAuth2Client} from "google-auth-library";
 import {appConf} from "../appConf";
 import {encrypt} from "./crypto.util";
+import {UserModel} from "../data-models";
+import {generateName} from "./username.util";
 
 const client = new OAuth2Client(appConf.google.clientId);
 
@@ -21,11 +23,19 @@ export async function validateJWT(jwt:any):Promise<ValidateJWTResult>{
       audience: jwt.clientId
     });
     const payload = ticket.getPayload();
-    const userid = payload['sub'];
+    let user = await UserModel.findOne({sub:payload.sub,iss:payload.iss});
+    if(!user){
+      user = new UserModel();
+      user.sub = payload.sub;
+      user.iss = payload.iss;
+      user.displayName = generateName(payload.given_name, payload.family_name)
+      user.email = payload.email;
+      user.created = Date.now();
+      await user.save();
+    }
     let sessionDetails = {
-      sub:payload.sub,
-      iss:payload.iss,
-      created:Date.now()
+      created:Date.now(),
+      id:user._id
     }
     let sessionToken = encrypt(JSON.stringify(sessionDetails));
     return {

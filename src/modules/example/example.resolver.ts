@@ -1,7 +1,7 @@
 import {ulid} from "ulid";
 import {withFilter} from "aws-lambda-graphql";
 import {pubSub} from "../../graphqlResources";
-import {MessageModel} from "../../data-models";
+import {MessageModel, UserModel} from "../../data-models";
 
 type MessageType = 'greeting' | 'test';
 
@@ -19,20 +19,22 @@ type SendMessageArgs = {
 
 export default {
   Mutation: {
-    async sendMessage(rootValue: any, { text, type }: SendMessageArgs, context) {
-      console.log(context);
-      const payload: Message = { messageId: ulid(), text, type, timestamp:Date.now() };
-
-      await new MessageModel(payload).save()
-      await pubSub.publish('NEW_MESSAGE', payload);
-
-      return payload;
+    async sendMessage(rootValue: any, { text, type }: SendMessageArgs, {currentUser}) {
+      let message = new MessageModel();
+      message.text = text;
+      message.type = type;
+      message.timestamp = Date.now();
+      message.user = currentUser.id;
+      await message.save();
+      message.user = await UserModel.findOne({_id:currentUser.id})
+      await pubSub.publish('NEW_MESSAGE', message);
+      return message;
     },
   },
   Query: {
     serverTime: () => Date.now(),
     messages: async() => {
-      return await MessageModel.find().exec();
+      return await MessageModel.find().populate('user').exec();
     }
   },
   Subscription: {

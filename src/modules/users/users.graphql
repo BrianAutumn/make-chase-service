@@ -4,8 +4,14 @@ type Mutation {
 
 type Query {
     me: String
+    user: User @auth
 }
 
 type LoginResult {
     success:Boolean
+}
+
+type User {
+    displayName:String!
+    _id:String!
 }

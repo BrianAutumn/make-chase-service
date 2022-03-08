@@ -4,10 +4,11 @@ enum MessageType {
 }
 
 type Message {
-    messageId: ID!
+    _id: String!
     text: String!
     type: MessageType!
     timestamp: String!
+    user: User!
 }
 
 type Mutation {
