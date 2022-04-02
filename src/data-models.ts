@@ -24,7 +24,7 @@ export const UserModel = buildModel('User', () => {
 export const GameModel = buildModel('Game', () => {
   const schema = new Schema({
     created: {type:String,required:true},
-    state: {type:String, required:true, enum:['LOBBY','CLOSED'], default:'LOBBY'},
+    state: {type:String, required:true, enum:['LOBBY','CLOSED','ENDED','ACTIVE']},
     name: {type:String,required:true},
     users: [{type:Schema.Types.ObjectId, ref:'User'}]
   });

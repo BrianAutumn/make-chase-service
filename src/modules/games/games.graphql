@@ -21,6 +21,8 @@ type Game {
 }
 
 enum GameState {
-    LOBBY,
+    LOBBY
     CLOSED
+    ACTIVE
+    ENDED
 }

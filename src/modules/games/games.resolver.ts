@@ -10,6 +10,7 @@ export default {
       game.created = Date.now();
       game.name = name;
       game.users = [currentUser.id]
+      game.state = 'LOBBY'
       await game.save();
       await game.populate('users')
       await pubSub.publish('UPDATE_GAMES', game);
@@ -19,6 +20,10 @@ export default {
       let game = await GameModel.findOne({_id:gameId})
       if(!game.users.includes(currentUser.id) && game.users.length === 1){
         game.users.push(currentUser.id)
+        await game.populate('users')
+        if(game.users.length === 2){
+          game.state = 'ACTIVE';
+        }
         await game.save();
         await game.populate('users')
         await pubSub.publish('UPDATE_GAMES', game);
