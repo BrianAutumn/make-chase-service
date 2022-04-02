@@ -36,7 +36,7 @@ export default {
     },
   },
   Query:{
-    async me(rootValue: any, args, context): Promise<string> {
+    async session(rootValue: any, args, context): Promise<string> {
       let session;
       try{
         session = decodeURIComponent(context?.event?.headers?.cookie?.match(/(?<=session=).*?(?=$| |;)/g)[0])
@@ -47,7 +47,7 @@ export default {
       }
       return session;
     },
-    async user(rootValue: any, args, {currentUser}): Promise<User> {
+    async me(rootValue: any, args, {currentUser}): Promise<User> {
       let user = await UserModel.findOne({_id:currentUser.id})
       console.log('found user',user,{sub:currentUser.sub,iss:currentUser.iss});
       return user;

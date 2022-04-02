@@ -3,8 +3,8 @@ type Mutation {
 }
 
 type Query {
-    me: String
-    user: User @auth
+    session: String
+    me: User @auth
 }
 
 type LoginResult {
