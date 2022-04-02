@@ -21,6 +21,16 @@ export const UserModel = buildModel('User', () => {
   return model('User',schema);
 })
 
+export const GameModel = buildModel('Game', () => {
+  const schema = new Schema({
+    created: {type:String,required:true},
+    state: {type:String, required:true, enum:['LOBBY','CLOSED'], default:'LOBBY'},
+    name: {type:String,required:true},
+    users: [{type:Schema.Types.ObjectId, ref:'User'}]
+  });
+  return model('Game',schema);
+})
+
 /**
  * A function used to make sure we do not repeat declare models. Seems to be an issue with serverless offline.
  *
