@@ -27,11 +27,13 @@ export default {
       }
       return game;
     },
-    async closeGame(rootValue, {gameId}): Promise<any> {
+    async closeGame(rootValue, {gameId}, {currentUser}): Promise<any> {
       let game = await GameModel.findOne({_id:gameId});
-      game.state = 'CLOSED';
-      await game.save();
       await game.populate('users')
+      if(game.users.find(user => user._id.toString() === currentUser.id)){
+        game.state = 'CLOSED';
+        await game.save();
+      }
       await pubSub.publish('UPDATE_GAMES', game);
       return game;
     },
