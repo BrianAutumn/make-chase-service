@@ -1,0 +1,16 @@
+type Mutation {
+    makeMove(gameId: String!, actions: [Action]): String! @auth
+}
+
+type Query {
+    board(gameId: String!): String @auth
+}
+
+type Subscription {
+    boardUpdates(gameId: String!): String
+}
+
+input Action {
+    code:String
+    args:String
+}

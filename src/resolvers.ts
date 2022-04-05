@@ -3,9 +3,11 @@
 import example from './modules/example/example.resolver';
 import users from './modules/users/users.resolver';
 import games from "./modules/games/games.resolver";
+import boards from "./modules/boards/boards.resolver";
 
 export default [
   example,
   users,
-  games
+  games,
+  boards
 ];

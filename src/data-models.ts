@@ -31,6 +31,46 @@ export const GameModel = buildModel('Game', () => {
   return model('Game',schema);
 })
 
+export type Board = {
+  meta:{
+    turn:String
+  },
+  roles:Map<String,String>,
+  pieces:Map<String,{location:String,$view:String}>,
+  spaces:Map<String,{x:Number,y:Number}>,
+  connections:Array<Array<String>>
+}
+
+export const BoardModel = buildModel('Board', () => {
+  const schema = new Schema({
+    gameId: [{type:Schema.Types.ObjectId, ref:'Game'}],
+    board: {
+      meta: {
+        turn:{type:String}
+      },
+      roles: {
+        type:Map,
+        of: {type:Schema.Types.ObjectId}, ref:'User'}
+      },
+      pieces: {
+        type:Map,
+        of:{
+          location: {type:String, required:true},
+          $view:String
+        }
+      },
+      spaces: {
+        type: Map,
+        of: {
+          x:{type:Number,required:true},
+          y:{type:Number,required:true}
+        }
+      },
+      connections: [[String]]
+    });
+  return model('Board',schema);
+})
+
 /**
  * A function used to make sure we do not repeat declare models. Seems to be an issue with serverless offline.
  *

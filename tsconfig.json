@@ -4,7 +4,8 @@
     "lib": ["esnext"],
     "moduleResolution": "node",
     "outDir": "dist",
-    "target": "es2015"
+    "target": "es2015",
+    "esModuleInterop": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]
