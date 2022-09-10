@@ -1,6 +1,7 @@
 import {pubSub} from "../../graphqlResources";
 import {GameModel} from "../../data-models";
 import {withFilter} from "aws-lambda-graphql";
+import {startGame} from "../../utils/gameEngine.util";
 
 export default {
   Mutation: {
@@ -22,6 +23,7 @@ export default {
         game.users.push(currentUser.id)
         await game.populate('users')
         if(game.users.length === 2){
+          await startGame(gameId);
           game.state = 'ACTIVE';
         }
         await game.save();

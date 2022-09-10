@@ -2,50 +2,50 @@ import {applyDelta, createDelta, filterOperation, removeOperations} from "./delt
 import {cloneDeep} from "lodash";
 
 const before = {
-  a:'a',
-  b:'b',
-  c:{
-    d:'d',
-    e:'e',
-    $other:'other'
+  a: 'a',
+  b: 'b',
+  c: {
+    d: 'd',
+    e: 'e',
+    $other: 'other'
   },
-  f:'f',
-  h:{
-    i:'i',
-    j:'j',
-    $other:'other'
+  f: 'f',
+  h: {
+    i: 'i',
+    j: 'j',
+    $other: 'other'
   },
-  k:[
+  k: [
     'l',
     'm',
     'n',
     {
-      o:'o',
-      p:'p'
+      o: 'o',
+      p: 'p'
     }
   ]
 }
 const after = {
-  a:'a',
-  b:'B',
-  c:{
-    d:'D',
-    e:'e',
-    $other:'other'
+  a: 'a',
+  b: 'B',
+  c: {
+    d: 'D',
+    e: 'e',
+    $other: 'other'
   },
-  g:'g',
-  h:{
-    i:'i',
-    j:'j',
-    $other:'other'
+  g: 'g',
+  h: {
+    i: 'i',
+    j: 'j',
+    $other: 'other'
   },
-  k:[
+  k: [
     'l',
     'M',
     'n',
     {
-      o:'o',
-      p:'P'
+      o: 'o',
+      p: 'P'
     }
   ]
 }
@@ -67,47 +67,47 @@ const delta = {
 }
 
 const deltaB = {
-  a:{
-    b:'b',
-    $operation:'operation'
+  a: {
+    b: 'b',
+    $operation: 'operation'
   },
-  c:{
-    d:'d',
-    $oper:'non',
-    e:{
-      f:'f',
-      $thing:'thing'
+  c: {
+    d: 'd',
+    $oper: 'non',
+    e: {
+      f: 'f',
+      $thing: 'thing'
     }
   },
-  g:{
-    h:'h',
-    $operation:'operation'
+  g: {
+    h: 'h',
+    $operation: 'operation'
   },
-  $root:'root'
+  $root: 'root'
 }
 
-describe('delta.util',() => {
+describe('delta.util', () => {
   describe('createDelta()', () => {
     it('should create a diff', () => {
-      expect(createDelta(before,after)).toEqual(delta)
+      expect(createDelta(before, after)).toEqual(delta)
     })
 
     it('should return undefined if nothing is different', () => {
-      expect(createDelta(before,before)).toEqual(undefined)
+      expect(createDelta(before, before)).toEqual(undefined)
     })
   })
   describe('applyDelta()', () => {
     it('should apply a patch', () => {
-      expect(applyDelta(cloneDeep(before),delta)).toEqual(after)
+      expect(applyDelta(cloneDeep(before), delta)).toEqual(after)
     })
   })
   describe('filterOperation()', () => {
     it('should filter root operations correctly', () => {
-      expect(filterOperation(cloneDeep(deltaB),'$root','root')).toEqual(undefined)
+      expect(filterOperation(cloneDeep(deltaB), '$root', 'root')).toEqual(undefined)
     })
 
     it('should filter first level operations correctly', () => {
-      expect(filterOperation(cloneDeep(deltaB),'$operation','operation')).toEqual({
+      expect(filterOperation(cloneDeep(deltaB), '$operation', 'operation')).toEqual({
         "$root": "root",
         "c": {
           "$oper": "non",
@@ -121,7 +121,7 @@ describe('delta.util',() => {
     })
 
     it('should filter nested operations correctly', () => {
-      expect(filterOperation(cloneDeep(deltaB),'$thing','thing')).toEqual({
+      expect(filterOperation(cloneDeep(deltaB), '$thing', 'thing')).toEqual({
         "$root": "root",
         "a": {
           "$operation": "operation",
@@ -154,6 +154,27 @@ describe('delta.util',() => {
           "h": "h"
         }
       })
+    })
+
+    it('thing', () => {
+      console.log(createDelta({
+          'a': 'a',
+          'b': 'c',
+          'c': 'c',
+          'd': {
+            'h':3,
+            '$view':['runner','other'],
+            '$notView':['runner','other']
+          }
+        },
+        {
+          'a': 'a',
+          'b': 'd',
+          'd': {
+            'h':1,
+            '$view':'runner'
+          }
+        }))
     })
   })
 })
