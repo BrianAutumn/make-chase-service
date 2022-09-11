@@ -1,4 +1,5 @@
 {
+  "module": "es2022",
   "compilerOptions": {
     "rootDir": "src",
     "lib": ["esnext"],

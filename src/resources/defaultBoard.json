@@ -1,0 +1,55 @@
+{
+  "turn": "runner",
+  "pieces":[
+    {
+      "label": "runner",
+      "location":"B",
+      "$view":"runner"
+    },
+    {
+      "label": "chaser",
+      "location":"C"
+    }
+  ],
+  "nodes":[
+    {
+      "label":"A",
+      "x":10,
+      "y":20
+    },
+    {
+      "label":"B",
+      "x":30,
+      "y":70
+    },
+    {
+      "label":"C",
+      "x":70,
+      "y":90
+    },
+    {
+      "label":"D",
+      "x":80,
+      "y":30
+    },
+    {
+      "label":"E",
+      "x":45,
+      "y":5
+    },
+    {
+      "label":"F",
+      "x":80,
+      "y":5
+    }
+  ],
+  "connections":[
+    ["A","B"],
+    ["B","C"],
+    ["C","A"],
+    ["D","C"],
+    ["A","E"],
+    ["E","D"],
+    ["E","F"]
+  ]
+}

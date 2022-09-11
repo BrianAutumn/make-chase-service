@@ -23,7 +23,7 @@ export default {
         game.users.push(currentUser.id)
         await game.populate('users')
         if(game.users.length === 2){
-          await startGame(gameId);
+          await startGame(gameId, game.users.map(user => user._id));
           game.state = 'ACTIVE';
         }
         await game.save();
