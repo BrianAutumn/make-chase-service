@@ -1,55 +1,92 @@
 {
   "turn": "runner",
-  "pieces":[
+  "pieces": [
     {
       "label": "runner",
-      "location":"B",
-      "$view":["runner"]
+      "location": "B",
+      "$view": [
+        "runner"
+      ]
     },
     {
       "label": "chaser",
-      "location":"C"
+      "location": "C"
     }
   ],
-  "nodes":[
+  "nodes": [
     {
-      "label":"A",
-      "x":10,
-      "y":20
+      "label": "A",
+      "x": 10,
+      "y": 20
     },
     {
-      "label":"B",
-      "x":30,
-      "y":70
+      "label": "B",
+      "x": 30,
+      "y": 70
     },
     {
-      "label":"C",
-      "x":70,
-      "y":90
+      "label": "C",
+      "x": 70,
+      "y": 90
     },
     {
-      "label":"D",
-      "x":80,
-      "y":30
+      "label": "D",
+      "x": 80,
+      "y": 30
     },
     {
-      "label":"E",
-      "x":45,
-      "y":5
+      "label": "E",
+      "x": 45,
+      "y": 5
     },
     {
-      "label":"F",
-      "x":80,
-      "y":5
+      "label": "F",
+      "x": 80,
+      "y": 5
     }
   ],
-  "connections":[
-    ["A","B"],
-    ["B","C"],
-    ["C","A"],
-    ["D","C"],
-    ["A","E"],
-    ["E","D"],
-    ["E","F"]
+  "connections": [
+    {
+      "nodes": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "nodes": [
+        "B",
+        "C"
+      ]
+    },
+    {
+      "nodes": [
+        "C",
+        "A"
+      ]
+    },
+    {
+      "nodes": [
+        "D",
+        "C"
+      ]
+    },
+    {
+      "nodes": [
+        "A",
+        "E"
+      ]
+    },
+    {
+      "nodes": [
+        "E",
+        "D"
+      ]
+    },
+    {
+      "nodes": [
+        "E",
+        "F"
+      ]
+    }
   ]
 }

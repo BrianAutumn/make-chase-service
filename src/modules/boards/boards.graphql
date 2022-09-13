@@ -25,7 +25,7 @@ type Board {
     pieces:[Piece],
     nodes:[Node],
     roles:[Role]
-    connections:[[String]]
+    connections:[Connection]
 }
 
 type Piece {
@@ -42,4 +42,8 @@ type Node {
 type Role {
     role:String,
     user:User
+}
+
+type Connection {
+    nodes:[String]
 }

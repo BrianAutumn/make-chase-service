@@ -32,15 +32,15 @@ export const GameModel = buildModel('Game', () => {
 })
 
 export type Board = {
-    turn: String
+    turn: string
     roles: Array<Role>,
     pieces: Array<Piece>,
     nodes: Array<BoardNode>,
-    connections: Array<Array<String>>
+    connections: Array<Connection>
 }
 
 export type Role = {
-    role: String,
+    role: string,
     user: User
 }
 
@@ -50,15 +50,19 @@ export type User = {
 }
 
 export type Piece = {
-    label: String,
-    location: String
+    label: string,
+    location: string
     $view:Array<string>
 }
 
 export type BoardNode = {
-    label: String,
-    x: Number,
-    y: Number
+    label: string,
+    x: number,
+    y: number
+}
+
+export type Connection = {
+    nodes:Array<string>
 }
 
 export const BoardModel = buildModel('Board', () => {
@@ -80,7 +84,9 @@ export const BoardModel = buildModel('Board', () => {
                 x: {type: Number, required: true},
                 y: {type: Number, required: true}
             }],
-            connections: [[String]]
+            connections: [{
+                nodes:[String]
+            }]
         }
     });
     return model('Board', schema);
