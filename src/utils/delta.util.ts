@@ -68,44 +68,5 @@ export function createDelta(before:any, after:any):Delta|undefined{
   }
 }
 
-/**
- * Remove all objects from the delta that have an operation key with the given operation value.
- *
- * @param delta The delta to filter.
- * @param operationName The operation name. Should start with a $.
- * @param operationValue The operation value
- */
-export function filterOperation(delta,operationName,operationValue){
-  if(delta[operationName] === operationValue){
-    return undefined;
-  }
-  for(let key in delta){
-    if(delta[key] !== null && typeof delta[key] === 'object'){
-      if(delta[key][operationName] === operationValue){
-        delete delta[key]
-      }else{
-        filterOperation(delta[key],operationName,operationValue);
-      }
-    }
-  }
-  return delta;
-}
 
-/**
- * Remove all operation keys from the delta.
- *
- * @param delta The delta to remove keys from
- */
-export function removeOperations(delta){
-  for(let key in delta){
-    if(key.charAt(0) === '$'){
-      delete delta[key];
-      continue
-    }
-    if(delta[key] !== null && typeof delta[key] === 'object'){
-      removeOperations(delta[key])
-    }
-  }
-  return delta;
-}
 

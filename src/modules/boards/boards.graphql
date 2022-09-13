@@ -3,7 +3,7 @@ type Mutation {
 }
 
 type Query {
-    board(gameId: String!): Board
+    board(gameId: String!): Board @auth
 }
 
 type Subscription {

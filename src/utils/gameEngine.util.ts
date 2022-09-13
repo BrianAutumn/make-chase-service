@@ -26,7 +26,7 @@ export async function startGame(gameId: string, users: Array<string>) {
             user:users[1]
         }
     ]
-    console.log(newBoard);
+    console.log('newBoard_log',JSON.stringify(newBoard))
     await newBoard.save();
 }
 

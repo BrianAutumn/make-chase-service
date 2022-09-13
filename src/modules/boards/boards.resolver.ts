@@ -2,6 +2,7 @@ import {withFilter} from "aws-lambda-graphql";
 import {pubSub} from "../../graphqlResources";
 import {BoardModel} from "../../data-models";
 import {makeActions} from "../../utils/gameEngine.util";
+import {removeMetadata, viewFilter} from "../../utils/metadata.util";
 
 export default {
   Mutation: {
@@ -16,16 +17,22 @@ export default {
     },
   },
   Query: {
-    async board(rootValue, { gameId }, {}) {
+    async board(rootValue, { gameId }, {currentUser}) {
       let board = (await BoardModel.findOne({gameId})).board;
       await board.populate('roles.user')
-      return board;
+      board = JSON.parse(JSON.stringify(board))
+      console.log('board_log', board);
+      let roles = board.roles.filter(role => role.user._id.toString() === currentUser.id).map(role => role.role);
+      return removeMetadata(viewFilter(board,roles));
     }
   },
   Subscription: {
     boardUpdates: {
-      resolve: (rootValue) => {
-        return rootValue.board;
+      resolve: (rootValue, {}, {currentUser}) => {
+        let userId = JSON.parse(currentUser).id
+        let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
+        console.log('board_log',rootValue.board);
+        return removeMetadata(viewFilter(rootValue.board,roles));
       },
       subscribe: withFilter(
         pubSub.subscribe('BOARD_UPDATE'),

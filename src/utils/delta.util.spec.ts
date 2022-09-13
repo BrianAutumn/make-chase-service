@@ -1,4 +1,4 @@
-import {applyDelta, createDelta, filterOperation, removeOperations} from "./delta.util";
+import {applyDelta, createDelta} from "./delta.util";
 import {cloneDeep} from "lodash";
 
 const before = {
@@ -99,82 +99,6 @@ describe('delta.util', () => {
   describe('applyDelta()', () => {
     it('should apply a patch', () => {
       expect(applyDelta(cloneDeep(before), delta)).toEqual(after)
-    })
-  })
-  describe('filterOperation()', () => {
-    it('should filter root operations correctly', () => {
-      expect(filterOperation(cloneDeep(deltaB), '$root', 'root')).toEqual(undefined)
-    })
-
-    it('should filter first level operations correctly', () => {
-      expect(filterOperation(cloneDeep(deltaB), '$operation', 'operation')).toEqual({
-        "$root": "root",
-        "c": {
-          "$oper": "non",
-          "d": "d",
-          "e": {
-            "$thing": "thing",
-            "f": "f"
-          }
-        }
-      })
-    })
-
-    it('should filter nested operations correctly', () => {
-      expect(filterOperation(cloneDeep(deltaB), '$thing', 'thing')).toEqual({
-        "$root": "root",
-        "a": {
-          "$operation": "operation",
-          "b": "b"
-        },
-        "c": {
-          "$oper": "non",
-          "d": "d"
-        },
-        "g": {
-          "$operation": "operation",
-          "h": "h"
-        }
-      })
-    })
-  })
-  describe('removeOperations()', () => {
-    it('should remove all operations', () => {
-      expect(removeOperations(cloneDeep(deltaB))).toEqual({
-        "a": {
-          "b": "b"
-        },
-        "c": {
-          "d": "d",
-          "e": {
-            "f": "f"
-          }
-        },
-        "g": {
-          "h": "h"
-        }
-      })
-    })
-
-    it('thing', () => {
-      console.log(createDelta({
-          'a': 'a',
-          'b': 'c',
-          'c': 'c',
-          'd': {
-            'h':3,
-            '$view':['runner','other'],
-            '$notView':['runner','other']
-          }
-        },
-        {
-          'a': 'a',
-          'b': 'd',
-          'd': {
-            'h':1,
-            '$view':'runner'
-          }
-        }))
     })
   })
 })

@@ -52,6 +52,7 @@ export type User = {
 export type Piece = {
     label: String,
     location: String
+    $view:Array<string>
 }
 
 export type BoardNode = {
@@ -72,7 +73,7 @@ export const BoardModel = buildModel('Board', () => {
             pieces: [{
                 label: String,
                 location: {type: String, required: true},
-                $view: String
+                $view: [String]
             }],
             nodes: [{
                 label: String,
