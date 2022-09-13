@@ -32,40 +32,48 @@ export const GameModel = buildModel('Game', () => {
 })
 
 export type Board = {
-    meta: {
-        turn: String
-    },
-    roles: Map<String, String>,
-    pieces: Map<String, { location: String, $view: String }>,
-    spaces: Map<String, { x: Number, y: Number }>,
+    turn: String
+    roles: Array<Role>,
+    pieces: Array<Piece>,
+    nodes: Array<BoardNode>,
     connections: Array<Array<String>>
+}
+
+export type Role = {
+    role: String,
+    user: String
+}
+
+export type Piece = {
+    label: String,
+    location: String
+}
+
+export type BoardNode = {
+    label: String,
+    x: Number,
+    y: Number
 }
 
 export const BoardModel = buildModel('Board', () => {
     const schema = new Schema({
         gameId: {type: Schema.Types.ObjectId, ref: 'Game'},
         board: {
-            turn: {type:String},
-            roles: {
-                type: Map,
-                of: {type: Schema.Types.ObjectId}, ref: 'User'
-            },
-            pieces: {
-                type: Array,
-                of: {
-                    label: String,
-                    location: {type: String, required: true},
-                    $view: String
-                }
-            },
-            nodes: {
-                type: Array,
-                of: {
-                    label: String,
-                    x: {type: Number, required: true},
-                    y: {type: Number, required: true}
-                }
-            },
+            turn: {type: String},
+            roles: [{
+                role: String,
+                user: {type: Schema.Types.ObjectId, ref: 'User'}
+            }],
+            pieces: [{
+                label: String,
+                location: {type: String, required: true},
+                $view: String
+            }],
+            nodes: [{
+                label: String,
+                x: {type: Number, required: true},
+                y: {type: Number, required: true}
+            }],
             connections: [[String]]
         }
     });

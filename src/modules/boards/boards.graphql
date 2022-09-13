@@ -3,14 +3,43 @@ type Mutation {
 }
 
 type Query {
-    board(gameId: String!): String @auth
+    board(gameId: String!): Board
 }
 
 type Subscription {
-    boardUpdates(gameId: String!): String
+    boardUpdates(gameId: String!): Board
 }
 
 input Action {
     code:String
     args:String
+}
+
+type BoardUpdate {
+    gameId:String,
+    board:Board
+}
+
+type Board {
+    turn:String,
+    pieces:[Piece],
+    nodes:[Node],
+    roles:[Role]
+    connections:[[String]]
+}
+
+type Piece {
+    label:String
+    location:String
+}
+
+type Node {
+    label:String,
+    x:Int,
+    y:Int
+}
+
+type Role {
+    role:String,
+    user:User
 }

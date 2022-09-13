@@ -1,19 +1,25 @@
 import {withFilter} from "aws-lambda-graphql";
 import {pubSub} from "../../graphqlResources";
 import {BoardModel} from "../../data-models";
-import {makeMove} from "../../utils/gameEngine.util";
+import {makeActions} from "../../utils/gameEngine.util";
 
 export default {
   Mutation: {
     async makeMove(rootValue, { gameId, actions }, {currentUser}) {
       let board = (await BoardModel.findOne({gameId})).board;
-      await makeMove(gameId,(await BoardModel.findOne({gameId})).board,actions,currentUser.id);
-      return board;
+      await board.populate('roles.user')
+      await makeActions(board,actions,currentUser.id);
+      board.save();
+      await pubSub.publish('BOARD_UPDATE',board);
+      return 'SUCCESS';
     },
   },
   Query: {
-    async board(rootValue, { gameId }, {currentUser}) {
-      return JSON.stringify((await BoardModel.findOne({gameId})).board)
+    async board(rootValue, { gameId }, {}) {
+      let board = (await BoardModel.findOne({gameId})).board;
+      await board.populate('roles.user')
+      console.log('board',board)
+      return board;
     }
   },
   Subscription: {
