@@ -67,6 +67,9 @@ function commitMoveAction(board:Board, targetNode:string, userId:string){
     }
     let role = roles[0];
     let piece = board.pieces.find(piece => piece.label === role)
+    if (targetNode === piece.location) {
+        throw `SPACE_ALREADY_OCCUPIED '${targetNode}'`
+    }
     if(board.connections.filter(connection => connection.includes(piece.location) && connection.includes(targetNode)).length === 0){
         throw `NO_CONNECTION '${targetNode}'`
     }

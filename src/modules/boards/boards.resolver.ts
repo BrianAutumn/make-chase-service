@@ -11,7 +11,7 @@ export default {
       await board.populate('roles.user')
       await makeActions(board,actions,currentUser.id);
       boardObject.save();
-      await pubSub.publish('BOARD_UPDATE',board);
+      await pubSub.publish('BOARD_UPDATE',boardObject);
       return 'SUCCESS';
     },
   },
@@ -25,11 +25,12 @@ export default {
   Subscription: {
     boardUpdates: {
       resolve: (rootValue) => {
-        return rootValue;
+        return rootValue.board;
       },
       subscribe: withFilter(
         pubSub.subscribe('BOARD_UPDATE'),
         (rootValue, { gameId }, context) => {
+          console.log('rootvalue log', rootValue, gameId);
           if (gameId === null) {
             return false;
           }
