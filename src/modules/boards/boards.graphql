@@ -1,5 +1,5 @@
 type Mutation {
-    makeMove(gameId: String!, actions: [Action]): String! @auth
+    makeActions(gameId: String!, actions: [Action]): String! @auth
 }
 
 type Query {

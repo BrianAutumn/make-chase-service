@@ -5,11 +5,12 @@ import {makeActions} from "../../utils/gameEngine.util";
 
 export default {
   Mutation: {
-    async makeMove(rootValue, { gameId, actions }, {currentUser}) {
-      let board = (await BoardModel.findOne({gameId})).board;
+    async makeActions(rootValue, { gameId, actions }, {currentUser}) {
+      let boardObject = await BoardModel.findOne({gameId});
+      let board = boardObject.board;
       await board.populate('roles.user')
       await makeActions(board,actions,currentUser.id);
-      board.save();
+      boardObject.save();
       await pubSub.publish('BOARD_UPDATE',board);
       return 'SUCCESS';
     },
@@ -18,7 +19,6 @@ export default {
     async board(rootValue, { gameId }, {}) {
       let board = (await BoardModel.findOne({gameId})).board;
       await board.populate('roles.user')
-      console.log('board',board)
       return board;
     }
   },

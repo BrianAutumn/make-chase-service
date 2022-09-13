@@ -1,7 +1,5 @@
 import {Board, BoardModel, Role} from "../data-models";
-import {cloneDeep, shuffle} from "lodash";
-import {pubSub} from "../graphqlResources";
-import {createDelta} from "./delta.util";
+import {shuffle} from "lodash";
 import {readFileSync} from "fs";
 import {appConf} from "../appConf";
 import {join} from "path";
@@ -9,11 +7,11 @@ import {join} from "path";
 const defaultBoard = JSON.parse(readFileSync(join(appConf.resources, 'defaultBoard.json')).toString())
 
 export type Action = {
-    code: String,
+    code: string,
     args: any
 }
 
-export async function startGame(gameId: String, users: Array<string>) {
+export async function startGame(gameId: string, users: Array<string>) {
     let newBoard = new BoardModel();
     newBoard.board = defaultBoard;
     newBoard.gameId = gameId;
@@ -32,7 +30,7 @@ export async function startGame(gameId: String, users: Array<string>) {
     await newBoard.save();
 }
 
-export async function makeActions(board: Board, actions: [Action], userId: String) {
+export async function makeActions(board: Board, actions: [Action], userId: string) {
     if(actions.length < 1){
         throw 'NO_ACTIONS'
     }
@@ -43,7 +41,7 @@ export async function makeActions(board: Board, actions: [Action], userId: Strin
     return board
 }
 
-function commitAction(board: Board, action: Action, userId: String) {
+function commitAction(board: Board, action: Action, userId: string) {
     switch (action.code){
         case 'MOVE':
             return commitMoveAction(board,action.args,userId)
@@ -52,13 +50,13 @@ function commitAction(board: Board, action: Action, userId: String) {
     }
 }
 
-function commitMoveAction(board, moveArgs, userId){
+function commitMoveAction(board:Board, targetNode:string, userId:string){
     //Validate
-    if (!moveArgs.space) {
+    if (!targetNode) {
         throw 'SPACE_NEEDED_FOR_MOVE'
     }
-    if (!Object.keys(board.nodes).includes(moveArgs.space)) {
-        throw 'NOT_VALID_SPACE'
+    if (!board.nodes.map(node => node.label).includes(targetNode)) {
+        throw `NOT_VALID_SPACE '${targetNode}'`
     }
     let roles = fetchRoles(board.roles, userId);
     if(roles.length === 0){
@@ -69,18 +67,19 @@ function commitMoveAction(board, moveArgs, userId){
     }
     let role = roles[0];
     let piece = board.pieces.find(piece => piece.label === role)
-    if(board.connections.filter(connection => connection.includes(piece.location) && connection.includes(moveArgs.space)).length === 0){
-        throw 'NO_CONNECTION'
+    if(board.connections.filter(connection => connection.includes(piece.location) && connection.includes(targetNode)).length === 0){
+        throw `NO_CONNECTION '${targetNode}'`
     }
 
     //Execute
-    board.pieces.find(piece => piece.label === role).location = moveArgs.space;
+    board.pieces.find(piece => piece.label === role).location = targetNode;
 }
 
-function fetchRoles(roles:Array<Role>, userId:String) {
+function fetchRoles(roles:Array<Role>, userId:string) {
     let foundRoles = [];
     for (let role of roles) {
-        if (role.user === userId) {
+        console.log('role log',role.user._id.toString(),userId)
+        if (role.user._id.toString() === userId) {
             foundRoles.push(role.role)
         }
     }

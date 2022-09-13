@@ -41,7 +41,12 @@ export type Board = {
 
 export type Role = {
     role: String,
-    user: String
+    user: User
+}
+
+export type User = {
+    _id:string,
+    displayName:string
 }
 
 export type Piece = {
