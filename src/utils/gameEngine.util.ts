@@ -31,6 +31,10 @@ export async function startGame(gameId: string, users: Array<string>) {
 }
 
 export async function makeActions(board: Board, actions: [Action], userId: string) {
+    let userRole = board.roles.find(role => role.user._id.toString() === userId)?.role;
+    if(userRole !== board.turn){
+        throw `'NOT_USERS_TURN '${userRole}'`
+    }
     if(actions.length < 1){
         throw 'NO_ACTIONS'
     }
@@ -38,6 +42,7 @@ export async function makeActions(board: Board, actions: [Action], userId: strin
         throw 'TOO_MANY_ACTIONS'
     }
     commitAction(board, actions[0], userId)
+    board.turn = userRole === 'chaser'?'runner':'chaser';
     return board
 }
 
