@@ -1,6 +1,6 @@
 {
   "turn": {
-    "role":"runner",
+    "role": "runner",
     "actions": [
       "MOVE"
     ]

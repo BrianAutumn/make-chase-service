@@ -7,24 +7,24 @@ import {generateName} from "./username.util";
 const client = new OAuth2Client(appConf.google.clientId);
 
 type ValidateJWTResult = {
-  success:boolean,
-  sessionToken?:string,
-  payload?:any
+  success: boolean,
+  sessionToken?: string,
+  payload?: any
 }
 
-export async function validateJWT(jwt:any):Promise<ValidateJWTResult>{
-  try{
-    if(jwt.clientId !== appConf.google.clientId){
+export async function validateJWT(jwt: any): Promise<ValidateJWTResult> {
+  try {
+    if (jwt.clientId !== appConf.google.clientId) {
       console.error(`Invalid ClientID! ${jwt.clientId}`)
-      return {success:false};
+      return {success: false};
     }
     const ticket = await client.verifyIdToken({
       idToken: jwt.credential,
       audience: jwt.clientId
     });
     const payload = ticket.getPayload();
-    let user = await UserModel.findOne({sub:payload.sub,iss:payload.iss});
-    if(!user){
+    let user = await UserModel.findOne({sub: payload.sub, iss: payload.iss});
+    if (!user) {
       user = new UserModel();
       user.sub = payload.sub;
       user.iss = payload.iss;
@@ -34,18 +34,18 @@ export async function validateJWT(jwt:any):Promise<ValidateJWTResult>{
       await user.save();
     }
     let sessionDetails = {
-      created:Date.now(),
-      id:user._id
+      created: Date.now(),
+      id: user._id
     }
     let sessionToken = encrypt(JSON.stringify(sessionDetails));
     return {
-      success:true,
+      success: true,
       sessionToken,
       payload
     };
-  }catch (e){
+  } catch (e) {
     console.error(e);
-    return {success:false};
+    return {success: false};
   }
 
 }

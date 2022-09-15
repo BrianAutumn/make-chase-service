@@ -3,10 +3,10 @@ import {removeMetadata, viewFilter} from "./metadata.util";
 
 const subject = {
   a: {
-    aa:'aa',
+    aa: 'aa',
     $view: ['RoleA', 'RoleB', 'RoleC'],
-    inner:{
-      aaa:'aaa',
+    inner: {
+      aaa: 'aaa',
       $view: ['RoleD'],
     }
   },
@@ -21,8 +21,8 @@ const subject = {
     i: 'i',
     j: 'j',
     $view: ['RoleD'],
-    inner:{
-      z:'z',
+    inner: {
+      z: 'z',
       $view: ['RoleA', 'RoleB', 'RoleC']
     },
     $other: 'other'

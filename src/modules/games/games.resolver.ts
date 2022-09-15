@@ -7,7 +7,7 @@ export default {
   Mutation: {
     async createGame(rootValue, {name}, {currentUser}): Promise<any> {
       let game = new GameModel();
-      console.log('currentUser log',currentUser)
+      console.log('currentUser log', currentUser)
       game.created = Date.now();
       game.name = name;
       game.users = [currentUser.id]
@@ -18,26 +18,26 @@ export default {
       return game;
     },
     async joinGame(rootValue, {gameId}, {currentUser}): Promise<any> {
-      let game = await GameModel.findOne({_id:gameId})
-      if(!game.users.includes(currentUser.id) && game.users.length === 1){
+      let game = await GameModel.findOne({_id: gameId})
+      if (!game.users.includes(currentUser.id) && game.users.length === 1) {
         game.users.push(currentUser.id)
         await game.populate('users')
-        if(game.users.length === 2){
+        if (game.users.length === 2) {
           await startGame(gameId, game.users.map(user => user._id));
           game.state = 'ACTIVE';
         }
         await game.save();
         await game.populate('users')
         await pubSub.publish('UPDATE_GAMES', game);
-      }else{
+      } else {
         await game.populate('users')
       }
       return game;
     },
     async closeGame(rootValue, {gameId}, {currentUser}): Promise<any> {
-      let game = await GameModel.findOne({_id:gameId});
+      let game = await GameModel.findOne({_id: gameId});
       await game.populate('users')
-      if(game.users.find(user => user._id.toString() === currentUser.id)){
+      if (game.users.find(user => user._id.toString() === currentUser.id)) {
         game.state = 'CLOSED';
         await game.save();
       }
@@ -45,7 +45,7 @@ export default {
       return game;
     },
   },
-  Query:{
+  Query: {
     async games(): Promise<any> {
       return await GameModel.find().populate('users').exec();
     }
