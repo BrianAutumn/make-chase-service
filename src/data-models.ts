@@ -44,24 +44,32 @@ export type Role = {
     user: User
 }
 
+export type Turn = {
+    role: string,
+    actions: Array<string>
+}
+
 export type User = {
     _id:string,
     displayName:string
 }
 
 export type Piece = {
+    state: string
     label: string,
     location: string
     $view:Array<string>
 }
 
 export type BoardNode = {
+    state: string
     label: string,
     x: number,
     y: number
 }
 
 export type Connection = {
+    state: string,
     nodes:Array<string>
 }
 
@@ -69,22 +77,28 @@ export const BoardModel = buildModel('Board', () => {
     const schema = new Schema({
         gameId: {type: Schema.Types.ObjectId, ref: 'Game'},
         board: {
-            turn: {type: String},
+            turn: {
+                role:String,
+                actions:[String]
+            },
             roles: [{
                 role: String,
                 user: {type: Schema.Types.ObjectId, ref: 'User'}
             }],
             pieces: [{
+                state:String,
                 label: String,
                 location: {type: String, required: true},
                 $view: [String]
             }],
             nodes: [{
+                state:String,
                 label: String,
                 x: {type: Number, required: true},
                 y: {type: Number, required: true}
             }],
             connections: [{
+                state:String,
                 nodes:[String]
             }]
         }

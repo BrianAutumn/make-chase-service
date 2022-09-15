@@ -1,7 +1,13 @@
 {
-  "turn": "runner",
+  "turn": {
+    "role":"runner",
+    "actions": [
+      "MOVE"
+    ]
+  },
   "pieces": [
     {
+      "state": "NORMAL",
       "label": "runner",
       "location": "B",
       "$view": [
@@ -9,37 +15,44 @@
       ]
     },
     {
+      "state": "NORMAL",
       "label": "chaser",
       "location": "C"
     }
   ],
   "nodes": [
     {
+      "state": "NORMAL",
       "label": "A",
       "x": 10,
       "y": 20
     },
     {
+      "state": "NORMAL",
       "label": "B",
       "x": 30,
       "y": 70
     },
     {
+      "state": "NORMAL",
       "label": "C",
       "x": 70,
       "y": 90
     },
     {
+      "state": "NORMAL",
       "label": "D",
       "x": 80,
       "y": 30
     },
     {
+      "state": "NORMAL",
       "label": "E",
       "x": 45,
       "y": 5
     },
     {
+      "state": "NORMAL",
       "label": "F",
       "x": 80,
       "y": 5
@@ -47,42 +60,49 @@
   ],
   "connections": [
     {
+      "state": "NORMAL",
       "nodes": [
         "A",
         "B"
       ]
     },
     {
+      "state": "NORMAL",
       "nodes": [
         "B",
         "C"
       ]
     },
     {
+      "state": "NORMAL",
       "nodes": [
         "C",
         "A"
       ]
     },
     {
+      "state": "NORMAL",
       "nodes": [
         "D",
         "C"
       ]
     },
     {
+      "state": "NORMAL",
       "nodes": [
         "A",
         "E"
       ]
     },
     {
+      "state": "NORMAL",
       "nodes": [
         "E",
         "D"
       ]
     },
     {
+      "state": "NORMAL",
       "nodes": [
         "E",
         "F"

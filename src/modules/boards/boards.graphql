@@ -21,7 +21,7 @@ type BoardUpdate {
 }
 
 type Board {
-    turn:String,
+    turn:Turn,
     pieces:[Piece],
     nodes:[Node],
     roles:[Role]
@@ -29,21 +29,29 @@ type Board {
 }
 
 type Piece {
+    state: String
     label:String
     location:String
 }
 
+type Turn {
+    role:String,
+    actions:[String]
+}
+
 type Node {
-    label:String,
-    x:Int,
+    state: String
+    label:String
+    x:Int
     y:Int
 }
 
 type Role {
-    role:String,
+    role:String
     user:User
 }
 
 type Connection {
+    state:String
     nodes:[String]
 }
