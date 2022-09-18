@@ -7,7 +7,7 @@
   },
   "pieces": [
     {
-      "state": "NORMAL",
+      "state": [],
       "label": "runner",
       "location": "B",
       "$view": [
@@ -15,44 +15,44 @@
       ]
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "label": "chaser",
       "location": "C"
     }
   ],
   "nodes": [
     {
-      "state": "NORMAL",
+      "state": [],
       "label": "A",
       "x": 10,
       "y": 20
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "label": "B",
       "x": 30,
       "y": 70
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "label": "C",
       "x": 70,
       "y": 90
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "label": "D",
       "x": 80,
       "y": 30
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "label": "E",
       "x": 45,
       "y": 5
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "label": "F",
       "x": 80,
       "y": 5
@@ -60,49 +60,49 @@
   ],
   "connections": [
     {
-      "state": "NORMAL",
+      "state": [],
       "nodes": [
         "A",
         "B"
       ]
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "nodes": [
         "B",
         "C"
       ]
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "nodes": [
         "C",
         "A"
       ]
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "nodes": [
         "D",
         "C"
       ]
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "nodes": [
         "A",
         "E"
       ]
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "nodes": [
         "E",
         "D"
       ]
     },
     {
-      "state": "NORMAL",
+      "state": [],
       "nodes": [
         "E",
         "F"

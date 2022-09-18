@@ -21,7 +21,6 @@ export default {
       let board = (await BoardModel.findOne({gameId})).board;
       await board.populate('roles.user')
       board = JSON.parse(JSON.stringify(board))
-      console.log('board_log', board);
       let roles = board.roles.filter(role => role.user._id.toString() === currentUser.id).map(role => role.role);
       return removeMetadata(viewFilter(board, roles));
     }

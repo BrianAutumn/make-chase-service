@@ -57,7 +57,7 @@ function commitSwitchTurns(board: Board) {
     board.turn.role = 'runner';
     board.turn.actions = ['MOVE']
   }else{
-    board.turn.role = 'runner';
+    board.turn.role = 'chaser';
     board.turn.actions = ['MOVE','BLOCK']
   }
 }
@@ -65,9 +65,9 @@ function commitSwitchTurns(board: Board) {
 function commitAction(board: Board, action: Action, userId: string) {
   switch (action.code) {
     case 'MOVE':
-      return commitMoveAction(board, action.args, userId)
+      return commitMoveAction(board, JSON.parse(action.args), userId)
     case 'BLOCK':
-      return commitBlockAction(board, action.args)
+      return commitBlockAction(board, JSON.parse(action.args))
     default:
       throw 'INVALID_ACTION'
   }
@@ -104,12 +104,12 @@ function commitBlockAction(board: Board, targetConnection: Array<string>) {
   if(!connection){
     throw 'CONNECTION_NOT_FOUND'
   }
-  if(connection.state === 'BLOCKED'){
+  if(connection.state.includes('BLOCKED')){
     throw 'CONNECTION_ALREADY_BLOCKED'
   }
 
   //Execute
-  connection.state = 'BLOCKED'
+  connection.state.push('BLOCKED');
 }
 
 function fetchRoles(roles: Array<Role>, userId: string) {

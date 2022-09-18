@@ -55,21 +55,21 @@ export type User = {
 }
 
 export type Piece = {
-  state: string
+  state: Array<string>
   label: string,
   location: string
   $view: Array<string>
 }
 
 export type BoardNode = {
-  state: string
+  state: Array<string>
   label: string,
   x: number,
   y: number
 }
 
 export type Connection = {
-  state: string,
+  state: Array<string>,
   nodes: Array<string>
 }
 
@@ -86,19 +86,19 @@ export const BoardModel = buildModel('Board', () => {
         user: {type: Schema.Types.ObjectId, ref: 'User'}
       }],
       pieces: [{
-        state: String,
+        state: [String],
         label: String,
         location: {type: String, required: true},
         $view: [String]
       }],
       nodes: [{
-        state: String,
+        state: [String],
         label: String,
         x: {type: Number, required: true},
         y: {type: Number, required: true}
       }],
       connections: [{
-        state: String,
+        state: [String],
         nodes: [String]
       }]
     }
