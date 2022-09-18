@@ -32,7 +32,7 @@ export const GameModel = buildModel('Game', () => {
 })
 
 export type Board = {
-  turn: string
+  turn: Turn
   roles: Array<Role>,
   pieces: Array<Piece>,
   nodes: Array<BoardNode>,

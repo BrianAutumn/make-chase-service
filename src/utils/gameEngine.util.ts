@@ -32,24 +32,42 @@ export async function startGame(gameId: string, users: Array<string>) {
 
 export async function makeActions(board: Board, actions: [Action], userId: string) {
   let userRole = board.roles.find(role => role.user._id.toString() === userId)?.role;
-  if (userRole !== board.turn) {
-    throw `'NOT_USERS_TURN '${userRole}'`
+  if (userRole !== board.turn.role) {
+    throw `NOT_USERS_TURN '${userRole}'`
   }
-  if (actions.length < 1) {
-    throw 'NO_ACTIONS'
+  if (actions.length < board.turn.actions.length) {
+    throw 'TOO_FEW_ACTIONS'
   }
-  if (actions.length > 1) {
+  if (actions.length > board.turn.actions.length) {
     throw 'TOO_MANY_ACTIONS'
   }
+  for(let i in actions){
+    if(actions[i].code !== board.turn.actions[i]){
+      throw `ACTION_NOT_ALLOWED '${actions[i].code} '${board.turn.actions[i]}'`
+    }
+    commitAction(board,actions[i],userId)
+  }
   commitAction(board, actions[0], userId)
-  board.turn = userRole === 'chaser' ? 'runner' : 'chaser';
+  commitSwitchTurns(board);
   return board
+}
+
+function commitSwitchTurns(board: Board) {
+  if(board.turn.role === 'chaser'){
+    board.turn.role = 'runner';
+    board.turn.actions = ['MOVE']
+  }else{
+    board.turn.role = 'runner';
+    board.turn.actions = ['MOVE','BLOCK']
+  }
 }
 
 function commitAction(board: Board, action: Action, userId: string) {
   switch (action.code) {
     case 'MOVE':
       return commitMoveAction(board, action.args, userId)
+    case 'BLOCK':
+      return commitBlockAction(board, action.args)
     default:
       throw 'INVALID_ACTION'
   }
@@ -78,6 +96,20 @@ function commitMoveAction(board: Board, targetNode: string, userId: string) {
 
   //Execute
   board.pieces.find(piece => piece.label === role).location = targetNode;
+}
+
+function commitBlockAction(board: Board, targetConnection: Array<string>) {
+  //Validate
+  let connection = board.connections.find(connection => JSON.stringify(connection.nodes.sort()) === JSON.stringify(targetConnection.sort()))
+  if(!connection){
+    throw 'CONNECTION_NOT_FOUND'
+  }
+  if(connection.state === 'BLOCKED'){
+    throw 'CONNECTION_ALREADY_BLOCKED'
+  }
+
+  //Execute
+  connection.state = 'BLOCKED'
 }
 
 function fetchRoles(roles: Array<Role>, userId: string) {
