@@ -32,20 +32,21 @@ export const GameModel = buildModel('Game', () => {
 })
 
 export type Board = {
+  victory: String
   turn: Turn
-  roles: Array<Role>,
-  pieces: Array<Piece>,
-  nodes: Array<BoardNode>,
+  roles: Array<Role>
+  pieces: Array<Piece>
+  nodes: Array<BoardNode>
   connections: Array<Connection>
 }
 
 export type Role = {
-  role: string,
+  role: string
   user: User
 }
 
 export type Turn = {
-  role: string,
+  role: string
   actions: Array<string>
 }
 
@@ -77,6 +78,7 @@ export const BoardModel = buildModel('Board', () => {
   const schema = new Schema({
     gameId: {type: Schema.Types.ObjectId, ref: 'Game'},
     board: {
+      victory: String,
       turn: {
         role: String,
         actions: [String]

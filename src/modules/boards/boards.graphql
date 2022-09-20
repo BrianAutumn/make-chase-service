@@ -16,14 +16,15 @@ input Action {
 }
 
 type BoardUpdate {
-    gameId:String,
+    gameId:String
     board:Board
 }
 
 type Board {
-    turn:Turn,
-    pieces:[Piece],
-    nodes:[Node],
+    victory:String
+    turn:Turn
+    pieces:[Piece]
+    nodes:[Node]
     roles:[Role]
     connections:[Connection]
 }
