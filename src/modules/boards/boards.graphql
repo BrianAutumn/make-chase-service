@@ -36,8 +36,9 @@ type Piece {
 }
 
 type Turn {
-    role:String,
+    role:String
     actions:[String]
+    count: Int
 }
 
 type Node {

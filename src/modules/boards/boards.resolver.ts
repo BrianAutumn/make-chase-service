@@ -3,6 +3,7 @@ import {pubSub} from "../../graphqlResources";
 import {BoardModel} from "../../data-models";
 import {makeActions} from "../../utils/gameEngine.util";
 import {removeMetadata, viewFilter} from "../../utils/metadata.util";
+import {completeGame} from "../games/games.resolver";
 
 export default {
   Mutation: {
@@ -12,6 +13,9 @@ export default {
       await board.populate('roles.user')
       await makeActions(board, actions, currentUser.id);
       boardObject.save();
+      if(board.victory){
+        await completeGame(gameId)
+      }
       await pubSub.publish('BOARD_UPDATE', boardObject);
       return 'SUCCESS';
     },

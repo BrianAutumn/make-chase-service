@@ -66,3 +66,11 @@ export default {
     },
   },
 };
+
+export async function completeGame(gameId){
+  let game = await GameModel.findOne({_id: gameId});
+  await game.populate('users')
+  game.state = 'COMPLETE';
+  game.save()
+  await pubSub.publish('UPDATE_GAMES', game);
+}

@@ -3,6 +3,7 @@ import {shuffle} from "lodash";
 import {readFileSync} from "fs";
 import {appConf} from "../appConf";
 import {join} from "path";
+import {getConnectedNodes} from "./board.utils";
 
 const defaultBoard = JSON.parse(readFileSync(join(appConf.resources, 'defaultBoard.json')).toString())
 
@@ -31,6 +32,9 @@ export async function startGame(gameId: string, users: Array<string>) {
 }
 
 export async function makeActions(board: Board, actions: [Action], userId: string) {
+  if(board.victory){
+    throw 'BOARD_VICTORIOUS'
+  }
   let userRole = board.roles.find(role => role.user._id.toString() === userId)?.role;
   if (userRole !== board.turn.role) {
     throw `NOT_USERS_TURN '${userRole}'`
@@ -48,11 +52,29 @@ export async function makeActions(board: Board, actions: [Action], userId: strin
     commitAction(board,actions[i],userId)
   }
   commitAction(board, actions[0], userId)
-  commitSwitchTurns(board);
+  let victory = checkVictory(board);
+  if(victory){
+    board.pieces.find(piece => piece.label === 'runner').$view = undefined;
+    board.victory = victory;
+  }else{
+    commitSwitchTurns(board);
+  }
   return board
 }
 
+function checkVictory(board:Board){
+  let runnerLocation = board.pieces.find(piece => piece.label === 'runner').location;
+  let chaserLocation = board.pieces.find(piece => piece.label === 'chaser').location;
+  if(runnerLocation === chaserLocation){
+    return 'chaser'
+  }
+  if(board.nodes.find(node => node.label === runnerLocation).state.includes('BLOCKED')){
+    return 'runner';
+  }
+}
+
 function commitSwitchTurns(board: Board) {
+  board.turn.count++;
   if(board.turn.role === 'chaser'){
     board.turn.role = 'runner';
     board.turn.actions = ['MOVE']
@@ -110,6 +132,11 @@ function commitBlockAction(board: Board, targetConnection: Array<string>) {
 
   //Execute
   connection.state.push('BLOCKED');
+  let chaserLocation = board.pieces.find(piece => piece.label === 'chaser').location;
+  let chaserConnected = getConnectedNodes(board,chaserLocation);
+  let unconnectedNodes = new Set(board.nodes.map(node => node.label));
+  chaserConnected.forEach(node => unconnectedNodes.delete(node))
+  unconnectedNodes.forEach(nodeLabel => board.nodes.find(node => node.label === nodeLabel).state.push('BLOCKED'))
 }
 
 function fetchRoles(roles: Array<Role>, userId: string) {

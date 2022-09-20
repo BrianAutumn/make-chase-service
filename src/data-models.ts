@@ -24,7 +24,7 @@ export const UserModel = buildModel('User', () => {
 export const GameModel = buildModel('Game', () => {
   const schema = new Schema({
     created: {type: String, required: true},
-    state: {type: String, required: true, enum: ['LOBBY', 'CLOSED', 'ENDED', 'ACTIVE']},
+    state: {type: String, required: true, enum: ['LOBBY', 'CLOSED', 'COMPLETE', 'ACTIVE']},
     name: {type: String, required: true},
     users: [{type: Schema.Types.ObjectId, ref: 'User'}]
   });
@@ -48,6 +48,7 @@ export type Role = {
 export type Turn = {
   role: string
   actions: Array<string>
+  count: number
 }
 
 export type User = {
@@ -81,7 +82,8 @@ export const BoardModel = buildModel('Board', () => {
       victory: String,
       turn: {
         role: String,
-        actions: [String]
+        actions: [String],
+        count: Number
       },
       roles: [{
         role: String,
