@@ -1,34 +1,45 @@
 import {Board, BoardModel, Role} from "../data-models";
-import {shuffle} from "lodash";
+import {cloneDeep, shuffle} from "lodash";
 import {readFileSync} from "fs";
 import {appConf} from "../appConf";
 import {join} from "path";
 import {getConnectedNodes} from "./board.utils";
 
 const defaultBoard = JSON.parse(readFileSync(join(appConf.resources, 'defaultBoard.json')).toString())
+const defaultMap = JSON.parse(readFileSync(join(appConf.resources, 'defaultMap.json')).toString())
 
 export type Action = {
   code: string,
   args: any
 }
 
-export async function startGame(gameId: string, users: Array<string>) {
-  let newBoard = new BoardModel();
-  newBoard.board = defaultBoard;
-  newBoard.gameId = gameId;
-  users = shuffle(users);
-  newBoard.board.roles = [
-    {
-      role: 'chaser',
-      user: users[0]
-    },
-    {
-      role: 'runner',
-      user: users[1]
+export async function startGame(gameId: string, users: Array<string>, map: string) {
+    let newBoard = new BoardModel();
+    newBoard.board = defaultBoard;
+    if(map === 'RANDOM'){
+      newBoard.board.nodes = defaultMap.nodes;
+      newBoard.board.connections = defaultMap.connections;
+    }else if(map === 'DEFAULT'){
+      newBoard.board.nodes = defaultMap.nodes;
+      newBoard.board.connections = defaultMap.connections;
     }
-  ]
-  console.log('newBoard_log', JSON.stringify(newBoard))
-  await newBoard.save();
+    newBoard.gameId = gameId;
+    users = shuffle(users);
+    let nodes = shuffle(cloneDeep(newBoard.board.nodes));
+    for(let i in newBoard.board.pieces){
+      newBoard.board.pieces[i].location = nodes[i].label;
+    }
+    newBoard.board.roles = [
+      {
+        role: 'chaser',
+        user: users[0]
+      },
+      {
+        role: 'runner',
+        user: users[1]
+      }
+    ]
+    await newBoard.save();
 }
 
 export async function makeActions(board: Board, actions: [Action], userId: string) {

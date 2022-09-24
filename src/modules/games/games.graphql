@@ -1,5 +1,5 @@
 type Mutation {
-    createGame(name: String!): Game! @auth
+    createGame(name: String!, map: String!): Game! @auth
     joinGame(gameId: String): Game @auth
     closeGame(gameId: String): Game @auth
 }
@@ -16,8 +16,9 @@ type Game {
     name:String!
     _id:String!
     created:String!
-    users:[User],
+    users:[User]
     state:GameState
+    map: String
 }
 
 enum GameState {

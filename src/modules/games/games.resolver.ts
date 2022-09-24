@@ -5,13 +5,14 @@ import {startGame} from "../../utils/gameEngine.util";
 
 export default {
   Mutation: {
-    async createGame(rootValue, {name}, {currentUser}): Promise<any> {
+    async createGame(rootValue, {name, map}, {currentUser}): Promise<any> {
       let game = new GameModel();
       console.log('currentUser log', currentUser)
       game.created = Date.now();
       game.name = name;
       game.users = [currentUser.id]
       game.state = 'LOBBY'
+      game.map = map;
       await game.save();
       await game.populate('users')
       await pubSub.publish('UPDATE_GAMES', game);
@@ -23,7 +24,7 @@ export default {
         game.users.push(currentUser.id)
         await game.populate('users')
         if (game.users.length === 2) {
-          await startGame(gameId, game.users.map(user => user._id));
+          await startGame(gameId, game.users.map(user => user._id), game.map);
           game.state = 'ACTIVE';
         }
         await game.save();

@@ -26,7 +26,8 @@ export const GameModel = buildModel('Game', () => {
     created: {type: String, required: true},
     state: {type: String, required: true, enum: ['LOBBY', 'CLOSED', 'COMPLETE', 'ACTIVE']},
     name: {type: String, required: true},
-    users: [{type: Schema.Types.ObjectId, ref: 'User'}]
+    users: [{type: Schema.Types.ObjectId, ref: 'User'}],
+    map: String
   });
   return model('Game', schema);
 })
