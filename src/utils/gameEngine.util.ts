@@ -144,7 +144,7 @@ function commitBlockAction(board: Board, targetConnection: Array<string>) {
   //Execute
   connection.state.push('BLOCKED');
   let chaserLocation = board.pieces.find(piece => piece.label === 'chaser').location;
-  let chaserConnected = getConnectedNodes(board,chaserLocation);
+  let chaserConnected = getConnectedNodes(board.connections,chaserLocation);
   let unconnectedNodes = new Set(board.nodes.map(node => node.label));
   chaserConnected.forEach(node => unconnectedNodes.delete(node))
   unconnectedNodes.forEach(nodeLabel => board.nodes.find(node => node.label === nodeLabel).state.push('BLOCKED'))

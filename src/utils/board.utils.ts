@@ -1,4 +1,4 @@
-import {Board} from "../data-models";
+import {Board, BoardConnection} from "../data-models";
 
 export function getMyRole(board, myUserId) {
   return board?.roles.find(role => role.user._id === myUserId).role;
@@ -16,9 +16,9 @@ export function getMyLocation(board, myUserId) {
   return board?.pieces.find(piece => piece.label === getMyRole(board, myUserId)).location;
 }
 
-export function getAdjacentNodes(board:Board, nodeLabel:string):Array<string> {
+export function getAdjacentNodes(connections:Array<BoardConnection>, nodeLabel:string):Array<string> {
   let adjacentNodes = new Set<string>();
-  for (let connection of board.connections) {
+  for (let connection of connections) {
     if (connection.nodes.includes(nodeLabel) && !connection.state.includes('BLOCKED')) {
       connection.nodes.forEach(node => adjacentNodes.add(node))
     }
@@ -26,13 +26,13 @@ export function getAdjacentNodes(board:Board, nodeLabel:string):Array<string> {
   return [...adjacentNodes];
 }
 
-export function getConnectedNodes(board:Board, nodeLabel:string):Array<string>{
+export function getConnectedNodes(connections:Array<BoardConnection>, nodeLabel:string):Array<string>{
   let checkedNodes = new Set();
-  let connected = new Set(getAdjacentNodes(board,nodeLabel));
+  let connected = new Set(getAdjacentNodes(connections,nodeLabel));
   let uncheckedNodes = [...connected];
   while (uncheckedNodes.length !== 0) {
     checkedNodes.add(uncheckedNodes[0])
-    for(let node of getAdjacentNodes(board,uncheckedNodes[0])){
+    for(let node of getAdjacentNodes(connections,uncheckedNodes[0])){
       connected.add(node);
       if(!checkedNodes.has(node)){
         uncheckedNodes.push(node)
