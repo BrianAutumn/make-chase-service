@@ -38,7 +38,7 @@ export type Board = {
   roles: Array<Role>
   pieces: Array<Piece>
   nodes: Array<BoardNode>
-  connections: Array<Connection>
+  connections: Array<BoardConnection>
 }
 
 export type Role = {
@@ -71,7 +71,7 @@ export type BoardNode = {
   y: number
 }
 
-export type Connection = {
+export type BoardConnection = {
   state: Array<string>,
   nodes: Array<string>
 }
