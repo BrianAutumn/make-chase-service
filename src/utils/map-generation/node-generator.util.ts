@@ -5,22 +5,22 @@ import {circleCircle} from 'intersects';
 const REJECTED_LIMIT_MULTIPLIER = 100
 const A_CODE = 65;
 
-export function generateRandomNodesBest(width: number, height: number, nodes: number, nodeRadius: number, nodeInfluenceMultiplier = 2): Array<BoardNode>{
+export function generateRandomNodesBest(width: number, height: number, nodes: number, nodeRadius: number): Array<BoardNode>{
   let result = [];
   while(result.length === 0 && nodes > 0){
-    result = generateRandomNodes(width,height,nodes,nodeRadius,nodeInfluenceMultiplier);
+    result = generateRandomNodes(width,height,nodes,nodeRadius);
     nodes--;
   }
   return result;
 }
 
-function generateRandomNodes(width: number, height: number, nodes: number, nodeRadius: number, nodeInfluenceMultiplier = 2): Array<BoardNode> {
+function generateRandomNodes(width: number, height: number, nodes: number, nodeRadius: number): Array<BoardNode> {
   let nodeList = new Array<BoardNode>();
   let rejectedLimit = nodes * REJECTED_LIMIT_MULTIPLIER;
   let rejected = 0;
   while (rejected < rejectedLimit && nodeList.length < nodes) {
     let subject = pickNode(width - nodeRadius * 2, nodeRadius * 2, height - nodeRadius * 2, nodeRadius * 2)
-    if (collidesAny(subject, nodeList, nodeRadius * nodeInfluenceMultiplier)) {
+    if (collidesAny(subject, nodeList, nodeRadius)) {
       rejected++;
     } else {
       nodeList.push(subject);

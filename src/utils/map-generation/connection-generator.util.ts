@@ -1,12 +1,12 @@
 import {BoardNode} from "../../data-models";
 import {shuffle} from "lodash";
-import {lineCircle} from "intersects";
+import {lineCircle, lineLine} from "intersects";
 import {getConnectedNodes} from "../board.utils";
 
 const REJECTION_LIMIT = 10000;
 type Connection = Array<string>;
 
-export function generateRandomConnections(nodes:Array<BoardNode>, connections:number, nodeRadius, nodeInfluenceModifier = 2):Array<Connection>{
+export function generateRandomConnections(nodes:Array<BoardNode>, connections:number, nodeRadius):Array<Connection>{
   let nodeMap = {};
   nodes.forEach(node => nodeMap[node.label] = node);
 
@@ -17,7 +17,7 @@ export function generateRandomConnections(nodes:Array<BoardNode>, connections:nu
 
   let i = 0;
   while(result.length < connections && i < combos.length){
-    if(!connectionCollides(combos[i],nodeMap,result,nodeRadius  * nodeInfluenceModifier)){
+    if(!connectionCollides(combos[i],nodeMap,result,nodeRadius)){
       result.push(combos[i])
     }
     i++
@@ -32,6 +32,9 @@ export function getAllCombinations(nodes:Array<BoardNode>):Array<Array<string>>{
 }
 
 function connectionCollides(subject:Array<string>,nodeMap:Record<string,BoardNode>,connections:Array<Array<string>>,nodeRadius){
+  if(collidesConnections(subject,nodeMap,connections)){
+    return true;
+  }
   return collidesNodes(subject, nodeMap, nodeRadius);
 }
 
@@ -86,17 +89,20 @@ function connectIslands(connections:Array<Array<string>>,nodeMap:Record<string,B
   return connections;
 }
 
-// function collidesConnections(connection:Array<string>,nodeMap:Record<string,BoardNode>,connections:Array<Array<string>>){
-//   let start = nodeMap[connection[0]];
-//   let end = nodeMap[connection[1]]
-//   for(let connection of connections){
-//     if(connectionCollidesConnection(start,end,nodeMap[connection[0]],nodeMap[connection[1]])){
-//       return true;
-//     }
-//   }
-//   return false;
-// }
+function collidesConnections(subject:Array<string>,nodeMap:Record<string,BoardNode>,connections:Array<Array<string>>){
+  let start = nodeMap[subject[0]];
+  let end = nodeMap[subject[1]]
+  for(let connection of connections){
+    if(connectionCollidesConnection(start,end,nodeMap[connection[0]],nodeMap[connection[1]])){
+      return true;
+    }
+  }
+  return false;
+}
 
-// function connectionCollidesConnection(aStart:BoardNode,aEnd:BoardNode,bStart:BoardNode,bEnd:BoardNode):boolean{
-//   return lineLine(aStart.x, aStart.y, aEnd.x, aEnd.y, bStart.x, bStart.y, bEnd.x, bEnd.y, 1, 1);
-// }
+function connectionCollidesConnection(aStart:BoardNode,aEnd:BoardNode,bStart:BoardNode,bEnd:BoardNode):boolean{
+  if(aStart.label === bStart.label || aEnd.label === bEnd.label){
+    return false;
+  }
+  return lineLine(aStart.x, aStart.y, aEnd.x, aEnd.y, bStart.x, bStart.y, bEnd.x, bEnd.y, 1, 1);
+}
