@@ -44,8 +44,8 @@ type Turn {
 type Node {
     state: [String]
     label:String
-    x:Int
-    y:Int
+    x:Float
+    y:Float
 }
 
 type Role {

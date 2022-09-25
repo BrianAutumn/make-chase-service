@@ -3,6 +3,6 @@ import {generateRandomConnections} from "./connection-generator.util";
 
 export function generateMap(width:number,height:number,nodes:number,nodeRadius:number,connections:number){
   let resolvedNodes = generateRandomNodesBest(width,height,nodes,nodeRadius);
-  let resolvedConnections = generateRandomConnections(resolvedNodes,connections,nodeRadius)
+  let resolvedConnections = generateRandomConnections(resolvedNodes,connections,nodeRadius).map(connection => {return {nodes:connection,state:[]}})
   return {nodes:resolvedNodes,connections:resolvedConnections};
 }

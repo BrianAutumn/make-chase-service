@@ -18,7 +18,7 @@ export async function startGame(gameId: string, users: Array<string>, map: strin
     let newBoard = new BoardModel();
     newBoard.board = defaultBoard;
     if(map === 'RANDOM'){
-      let randomBoard = generateMap(100,100,10,6,20)
+      let randomBoard = generateMap(100,100,15,2,30)
       newBoard.board.nodes = randomBoard.nodes;
       newBoard.board.connections = randomBoard.connections;
     }else if(map === 'DEFAULT'){
