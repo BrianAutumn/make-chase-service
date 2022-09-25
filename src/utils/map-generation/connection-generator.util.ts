@@ -1,7 +1,7 @@
-import {BoardNode} from "../data-models";
+import {BoardNode} from "../../data-models";
 import {shuffle} from "lodash";
 import {lineCircle} from "intersects";
-import {getConnectedNodes} from "./board.utils";
+import {getConnectedNodes} from "../board.utils";
 
 const REJECTION_LIMIT = 10000;
 type Connection = Array<string>;

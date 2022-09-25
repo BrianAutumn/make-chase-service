@@ -4,6 +4,7 @@ import {readFileSync} from "fs";
 import {appConf} from "../appConf";
 import {join} from "path";
 import {getConnectedNodes} from "./board.utils";
+import {generateMap} from "./map-generation/map-generator.util";
 
 const defaultBoard = JSON.parse(readFileSync(join(appConf.resources, 'defaultBoard.json')).toString())
 const defaultMap = JSON.parse(readFileSync(join(appConf.resources, 'defaultMap.json')).toString())
@@ -17,8 +18,9 @@ export async function startGame(gameId: string, users: Array<string>, map: strin
     let newBoard = new BoardModel();
     newBoard.board = defaultBoard;
     if(map === 'RANDOM'){
-      newBoard.board.nodes = defaultMap.nodes;
-      newBoard.board.connections = defaultMap.connections;
+      let randomBoard = generateMap(100,100,10,6,20)
+      newBoard.board.nodes = randomBoard.nodes;
+      newBoard.board.connections = randomBoard.connections;
     }else if(map === 'DEFAULT'){
       newBoard.board.nodes = defaultMap.nodes;
       newBoard.board.connections = defaultMap.connections;

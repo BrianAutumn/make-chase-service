@@ -1,5 +1,5 @@
 import {floor} from "lodash";
-import {BoardNode} from "../data-models";
+import {BoardNode} from "../../data-models";
 import {circleCircle} from 'intersects';
 
 const REJECTED_LIMIT_MULTIPLIER = 100
@@ -14,7 +14,7 @@ export function generateRandomNodesBest(width: number, height: number, nodes: nu
   return result;
 }
 
-export function generateRandomNodes(width: number, height: number, nodes: number, nodeRadius: number, nodeInfluenceMultiplier = 2): Array<BoardNode> {
+function generateRandomNodes(width: number, height: number, nodes: number, nodeRadius: number, nodeInfluenceMultiplier = 2): Array<BoardNode> {
   let nodeList = new Array<BoardNode>();
   let rejectedLimit = nodes * REJECTED_LIMIT_MULTIPLIER;
   let rejected = 0;
