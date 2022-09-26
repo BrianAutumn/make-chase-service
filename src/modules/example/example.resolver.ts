@@ -19,21 +19,21 @@ type SendMessageArgs = {
 
 export default {
   Mutation: {
-    async sendMessage(rootValue: any, { text, type }: SendMessageArgs, {currentUser}) {
+    async sendMessage(rootValue: any, {text, type}: SendMessageArgs, {currentUser}) {
       let message = new MessageModel();
       message.text = text;
       message.type = type;
       message.timestamp = Date.now();
       message.user = currentUser.id;
       await message.save();
-      message.user = await UserModel.findOne({_id:currentUser.id})
+      message.user = await UserModel.findOne({_id: currentUser.id})
       await pubSub.publish('NEW_MESSAGE', message);
       return message;
     },
   },
   Query: {
     serverTime: () => Date.now(),
-    messages: async() => {
+    messages: async () => {
       return await MessageModel.find().populate('user').exec();
     }
   },

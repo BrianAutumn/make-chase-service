@@ -31,8 +31,8 @@ module.exports = {
         {
           from: "src",
           to: "src",
-          globOptions:{
-            ignore:['**/*.js','**/*.ts']
+          globOptions: {
+            ignore: ['**/*.js', '**/*.ts']
           }
         },
       ],

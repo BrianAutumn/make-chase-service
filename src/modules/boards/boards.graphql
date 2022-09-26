@@ -1,0 +1,59 @@
+type Mutation {
+    makeActions(gameId: String!, actions: [Action]): String! @auth
+}
+
+type Query {
+    board(gameId: String!): Board @auth
+}
+
+type Subscription {
+    boardUpdates(gameId: String!): Board
+}
+
+input Action {
+    code:String
+    args:String
+}
+
+type BoardUpdate {
+    gameId:String
+    board:Board
+}
+
+type Board {
+    victory:String
+    turn:Turn
+    pieces:[Piece]
+    nodes:[Node]
+    roles:[Role]
+    connections:[Connection]
+}
+
+type Piece {
+    state: [String]
+    label:String
+    location:String
+}
+
+type Turn {
+    role:String
+    actions:[String]
+    count: Int
+}
+
+type Node {
+    state: [String]
+    label:String
+    x:Float
+    y:Float
+}
+
+type Role {
+    role:String
+    user:User
+}
+
+type Connection {
+    state:[String]
+    nodes:[String]
+}

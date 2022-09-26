@@ -14,9 +14,9 @@ const dynamoDbClient = new DynamoDB.DocumentClient({
     : {}),
 });
 
-const eventStore = new DynamoDBEventStore({ dynamoDbClient });
-export const pubSub = new PubSub({ eventStore });
-export const subscriptionManager = new DynamoDBSubscriptionManager({ dynamoDbClient });
+const eventStore = new DynamoDBEventStore({dynamoDbClient});
+export const pubSub = new PubSub({eventStore});
+export const subscriptionManager = new DynamoDBSubscriptionManager({dynamoDbClient});
 export const connectionManager = new DynamoDBConnectionManager({
   // this one is weird but we don't care because you'll use it only if you want to use serverless-offline
   // why is it like that? because we are extracting api gateway endpoint from received events

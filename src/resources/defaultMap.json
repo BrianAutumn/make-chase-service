@@ -1,0 +1,91 @@
+{
+  "nodes": [
+    {
+      "state": [],
+      "label": "A",
+      "x": 10,
+      "y": 20
+    },
+    {
+      "state": [],
+      "label": "B",
+      "x": 30,
+      "y": 70
+    },
+    {
+      "state": [],
+      "label": "C",
+      "x": 70,
+      "y": 90
+    },
+    {
+      "state": [],
+      "label": "D",
+      "x": 80,
+      "y": 30
+    },
+    {
+      "state": [],
+      "label": "E",
+      "x": 45,
+      "y": 5
+    },
+    {
+      "state": [],
+      "label": "F",
+      "x": 80,
+      "y": 5
+    }
+  ],
+  "connections": [
+    {
+      "state": [],
+      "nodes": [
+        "A",
+        "B"
+      ]
+    },
+    {
+      "state": [],
+      "nodes": [
+        "B",
+        "C"
+      ]
+    },
+    {
+      "state": [],
+      "nodes": [
+        "C",
+        "A"
+      ]
+    },
+    {
+      "state": [],
+      "nodes": [
+        "D",
+        "C"
+      ]
+    },
+    {
+      "state": [],
+      "nodes": [
+        "A",
+        "E"
+      ]
+    },
+    {
+      "state": [],
+      "nodes": [
+        "E",
+        "D"
+      ]
+    },
+    {
+      "state": [],
+      "nodes": [
+        "E",
+        "F"
+      ]
+    }
+  ]
+}

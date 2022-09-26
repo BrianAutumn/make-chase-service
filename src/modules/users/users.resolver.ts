@@ -11,7 +11,7 @@ type LoginResult = {
 };
 
 type User = {
-  displayName:string
+  displayName: string
 }
 
 export default {
@@ -35,21 +35,21 @@ export default {
       };
     },
   },
-  Query:{
-    async me(rootValue: any, args, context): Promise<string> {
+  Query: {
+    async session(rootValue: any, args, context): Promise<string> {
       let session;
-      try{
+      try {
         session = decodeURIComponent(context?.event?.headers?.cookie?.match(/(?<=session=).*?(?=$| |;)/g)[0])
-      }finally {
+      } finally {
       }
-      if(!session){
+      if (!session) {
         throw new AuthenticationError('No Session')
       }
       return session;
     },
-    async user(rootValue: any, args, {currentUser}): Promise<User> {
-      let user = await UserModel.findOne({_id:currentUser.id})
-      console.log('found user',user,{sub:currentUser.sub,iss:currentUser.iss});
+    async me(rootValue: any, args, {currentUser}): Promise<User> {
+      let user = await UserModel.findOne({_id: currentUser.id})
+      console.log('found user', user, {sub: currentUser.sub, iss: currentUser.iss});
       return user;
     }
   }

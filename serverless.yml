@@ -100,7 +100,7 @@ functions:
           enabled: true
           type: dynamodb
           arn:
-            Fn::GetAtt: [EventsDynamoDBTable, StreamArn]
+            Fn::GetAtt: [ EventsDynamoDBTable, StreamArn ]
 
 resources:
   Resources:
