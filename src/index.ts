@@ -8,7 +8,6 @@ import {mergeTypeDefs, mergeResolvers} from '@graphql-tools/merge'
 import {loadFilesSync} from '@graphql-tools/load-files'
 import {join} from 'path';
 import {connect} from "./mongooseManager";
-import HttpHeadersPlugin from 'apollo-server-plugin-http-headers';
 import {gql} from 'apollo-server'
 import {makeExecutableSchema} from "@graphql-tools/schema";
 import {getDirective, MapperKind, mapSchema} from '@graphql-tools/utils'
@@ -56,10 +55,8 @@ const server = new Server({
       return {
         willSendResponse(requestContext) {
           const { authToken } = requestContext.context;
-          requestContext.response.http.headers.set("Test", `test value`);
           if(authToken){
             requestContext.response.http.headers.set("Set-Cookie", `session=${authToken}; Secure; HttpOnly`);
-            requestContext.response.http.headers.set("Not-Cookie", `session=${authToken}; Secure; HttpOnly`);
             requestContext.response.http.headers.set("Cache-Control", `no-cache="Set-Cookie"`);
           }
           return requestContext;

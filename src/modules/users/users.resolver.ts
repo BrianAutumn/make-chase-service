@@ -28,8 +28,7 @@ export default {
       }
       context.authToken = validateJWTResult.sessionToken;
       return {
-        success: true,
-        authToken: validateJWTResult.sessionToken
+        success: true
       };
     },
   },

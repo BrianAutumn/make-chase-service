@@ -9,7 +9,6 @@ type Query {
 
 type LoginResult {
     success:Boolean
-    authToken: String
 }
 
 type User {
