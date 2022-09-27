@@ -1,0 +1,29 @@
+type Mutation {
+    createGame(name: String!, map: String!): Game! @auth
+    joinGame(gameId: String): Game @auth
+    closeGame(gameId: String): Game @auth
+}
+
+type Query {
+    games: [Game]
+}
+
+type Subscription {
+    gameFeed: Game
+}
+
+type Game {
+    name:String!
+    _id:String!
+    created:String!
+    users:[User]
+    state:GameState
+    map: String
+}
+
+enum GameState {
+    LOBBY
+    CLOSED
+    ACTIVE
+    COMPLETE
+}

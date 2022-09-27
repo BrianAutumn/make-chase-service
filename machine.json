@@ -1,0 +1,64 @@
+{
+  "id": "Chase Game",
+  "initial": "LOBBY",
+  "states": {
+    "LOBBY": {
+      "initial": "ONE_PLAYER",
+      "states": {
+        "ONE_PLAYER": {
+          "on": {
+            "PLAYER_ENTER": {
+              "target": "TWO_PLAYERS"
+            },
+            "PLAYER_LEAVE": {
+              "target": "#Chase Game.CLOSED"
+            }
+          }
+        },
+        "TWO_PLAYERS": {
+          "on": {
+            "PLAYER_LEAVE": {
+              "target": "ONE_PLAYER"
+            },
+            "GAME_START": {
+              "target": "#Chase Game.PLAYING"
+            }
+          }
+        }
+      }
+    },
+    "PLAYING": {
+      "initial": "PLAYER_ONE_TURN",
+      "states": {
+        "PLAYER_ONE_TURN": {
+          "on": {
+            "PLAYER_ONE_ACTION": {
+              "target": "PLAYER_TWO_TURN"
+            }
+          }
+        },
+        "PLAYER_TWO_TURN": {
+          "on": {
+            "PLAYER_TWO_ACTION": {
+              "target": "PLAYER_ONE_TURN"
+            }
+          }
+        }
+      },
+      "on": {
+        "GAME_END": {
+          "target": "COMPLETE"
+        },
+        "PLAYER_LEAVE": {
+          "target": "COMPLETE"
+        }
+      }
+    },
+    "COMPLETE": {
+      "type": "final"
+    },
+    "CLOSED": {
+      "type": "final"
+    }
+  }
+}

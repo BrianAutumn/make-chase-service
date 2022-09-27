@@ -1,7 +1,6 @@
 const nodeExternals = require('webpack-node-externals');
 const slsw = require('serverless-webpack');
 const CopyPlugin = require("copy-webpack-plugin");
-const path = require('path')
 
 module.exports = {
   entry: slsw.lib.entries,
@@ -14,6 +13,9 @@ module.exports = {
         test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env']
+        }
       },
       {
         test: /\.mjs$/,
@@ -31,8 +33,8 @@ module.exports = {
         {
           from: "src",
           to: "src",
-          globOptions:{
-            ignore:['**/*.js','**/*.ts']
+          globOptions: {
+            ignore: ['**/*.js', '**/*.ts']
           }
         },
       ],

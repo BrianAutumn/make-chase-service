@@ -1,20 +1,20 @@
 import {join} from "path";
 import {readFileSync} from 'fs';
 
-let animals = generateMap(readFileSync(join(__dirname,'./resources/Animals.txt')).toString());
-let adjectives = generateMap(readFileSync(join(__dirname,'./resources/Adjectives.txt')).toString());
+let animals = generateMap(readFileSync(join(__dirname, './resources/Animals.txt')).toString());
+let adjectives = generateMap(readFileSync(join(__dirname, './resources/Adjectives.txt')).toString());
 
-export function generateName(first = selectRandomKey(adjectives), last = selectRandomKey(animals)){
+export function generateName(first = selectRandomKey(adjectives), last = selectRandomKey(animals)) {
   let animal = selectRandom(animals[last[0].toLowerCase()]);
   let adjective = selectRandom(adjectives[first[0].toLowerCase()]);
   return capitalize(adjective) + capitalize(animal);
 }
 
-function generateMap(string){
+function generateMap(string) {
   let map = {}
   string.split('\r\n').forEach(word => {
     word.toLowerCase();
-    if(!map[word[0]]){
+    if (!map[word[0]]) {
       map[word[0]] = new Set();
     }
     map[word[0]].add(word)
@@ -25,14 +25,14 @@ function generateMap(string){
   return map;
 }
 
-function selectRandom(array){
+function selectRandom(array) {
   return array[Math.floor(Math.random() * array.length)]
 }
 
-function capitalize(word){
+function capitalize(word) {
   return word[0].toUpperCase() + word.slice(1)
 }
 
-function selectRandomKey(obj){
+function selectRandomKey(obj) {
   return selectRandom(Object.keys(obj));
 }

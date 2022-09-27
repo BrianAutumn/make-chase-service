@@ -1,0 +1,23 @@
+{
+  "victory": null,
+  "turn": {
+    "role": "runner",
+    "actions": [
+      "MOVE"
+    ],
+    "count": 1
+  },
+  "pieces": [
+    {
+      "state": [],
+      "label": "runner",
+      "$view": [
+        "runner"
+      ]
+    },
+    {
+      "state": [],
+      "label": "chaser"
+    }
+  ]
+}
