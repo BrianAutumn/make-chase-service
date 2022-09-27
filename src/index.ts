@@ -30,7 +30,7 @@ schema = mapSchema(schema, {
       fieldConfig.resolve = async function (source, args, context, info) {
         let session = context?.event?.headers?.cookie?.match(/(?<=session=).*?(?=$| |;)/g)[0]
         if (!session) {
-          throw new AuthenticationError('No Session')
+          throw new AuthenticationError(`No Session (${context?.event?.headers?.cookie})`)
         }
         let user;
         try {
