@@ -51,7 +51,20 @@ const server = new Server({
   connectionManager,
   eventProcessor: new DynamoDBEventProcessor(),
   schema,
-  plugins: [HttpHeadersPlugin],
+  plugins: [{
+    requestDidStart(){
+      return {
+        willSendResponse(requestContext) {
+          const { authToken } = requestContext.context;
+          requestContext.response.http.headers.set("Test", `test value`);
+          if(authToken){
+            requestContext.response.http.headers.set("Set-Cookie", `session=${authToken}; Secure; HttpOnly`);
+          }
+          return requestContext;
+        }
+      };
+    }
+  }],
   subscriptionManager,
   // use serverless-offline endpoint in offline mode
   ...(process.env.IS_OFFLINE
