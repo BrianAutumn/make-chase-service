@@ -7,7 +7,8 @@ type LoginArgs = {
 };
 
 type LoginResult = {
-  success: Boolean;
+  success: Boolean
+  authToken?: string
 };
 
 type User = {
@@ -31,7 +32,8 @@ export default {
         }
       })
       return {
-        success: true
+        success: true,
+        authToken: validateJWTResult.sessionToken
       };
     },
   },
@@ -48,9 +50,7 @@ export default {
       return session;
     },
     async me(rootValue: any, args, {currentUser}): Promise<User> {
-      let user = await UserModel.findOne({_id: currentUser.id})
-      console.log('found user', user, {sub: currentUser.sub, iss: currentUser.iss});
-      return user;
+      return UserModel.findOne({_id: currentUser.id});
     }
   }
 };
