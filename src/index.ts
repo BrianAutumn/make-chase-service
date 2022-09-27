@@ -60,6 +60,7 @@ const server = new Server({
           if(authToken){
             requestContext.response.http.headers.set("Set-Cookie", `session=${authToken}; Secure; HttpOnly`);
             requestContext.response.http.headers.set("Not-Cookie", `session=${authToken}; Secure; HttpOnly`);
+            requestContext.response.http.headers.set("Cache-Control", `no-cache="Set-Cookie"`);
           }
           return requestContext;
         }
