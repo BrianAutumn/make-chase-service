@@ -28,9 +28,10 @@ schema = mapSchema(schema, {
     if (authDirective) {
       const {resolve = defaultFieldResolver} = fieldConfig;
       fieldConfig.resolve = async function (source, args, context, info) {
-        let session = context?.event?.headers?.cookie?.match(/(?<=session=).*?(?=$| |;)/g)[0]
+        let cookie = context?.event?.headers?.Cookie || context?.event?.headers?.cookie
+        let session = cookie.match(/(?<=session=).*?(?=$| |;)/g)[0]
         if (!session) {
-          throw new AuthenticationError(`No Session (${Object.keys(context?.event?.headers)})`)
+          throw new AuthenticationError(`No Session`)
         }
         let user;
         try {
