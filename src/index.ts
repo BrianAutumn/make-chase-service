@@ -59,6 +59,7 @@ const server = new Server({
           requestContext.response.http.headers.set("Test", `test value`);
           if(authToken){
             requestContext.response.http.headers.set("Set-Cookie", `session=${authToken}; Secure; HttpOnly`);
+            requestContext.response.http.headers.set("Not-Cookie", `session=${authToken}; Secure; HttpOnly`);
           }
           return requestContext;
         }
