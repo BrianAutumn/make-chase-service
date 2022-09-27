@@ -15,6 +15,8 @@ type User = {
   displayName: string
 }
 
+
+//TODO Need to figure out how to set the session as an http only cookie. Insecure right now.
 export default {
   Mutation: {
     async login(rootValue: any, {jwt}: LoginArgs, context): Promise<LoginResult> {
@@ -24,8 +26,6 @@ export default {
           success: false
         }
       }
-      context.expressResponse.set('Set-Cookie', [`session=${validateJWTResult.sessionToken}; HttpOnly; Secure`])
-      context.expressResponse.set('test', [`test`])
       return {
         success: true,
         authToken: validateJWTResult.sessionToken

@@ -62,11 +62,10 @@ const server = new Server({
     }
     : {playground: true}),
   introspection: true,
-  context: ({event, context, res}) => {
+  context: ({event, context}) => {
     return {
       event,
-      context,
-      expressResponse:res
+      context
     };
   },
   subscriptions: {
