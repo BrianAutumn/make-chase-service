@@ -24,13 +24,8 @@ export default {
           success: false
         }
       }
-      context.setCookies.push({
-        name: 'session',
-        value: validateJWTResult.sessionToken,
-        options: {
-          httpOnly: true
-        }
-      })
+      context.expressResponse.res.set('Set-Cookie', [`session=${validateJWTResult.sessionToken}; HttpOnly; Secure`])
+      context.expressResponse.res.set('test', [`test`])
       return {
         success: true,
         authToken: validateJWTResult.sessionToken
