@@ -1,8 +1,6 @@
 import {join} from "path";
 import {getToken} from "./token-manger";
 
-console.log('app conf log',getToken('DB_CONN'))
-
 export const appConf = {
   buildNumber: getToken('BUILD_NUMBER'),
   buildDate: getToken('BUILD_DATE'),
