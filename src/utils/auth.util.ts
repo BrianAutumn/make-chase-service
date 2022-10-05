@@ -1,5 +1,5 @@
 import {OAuth2Client} from "google-auth-library";
-import {appConf} from "../appConf";
+import {appConf} from "../app-conf";
 import {encrypt} from "./crypto.util";
 import {UserModel} from "../data-models";
 import {generateName} from "./username.util";
