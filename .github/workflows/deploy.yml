@@ -45,7 +45,9 @@ jobs:
         env:
           BUILD_NUMBER: ${{ github.run_number }}
           BUILD_DATE: ${{ steps.time.outputs.formattedTime }}
-          PROD_DB_URL: ${{ secrets.PROD_DB_URL }}
+          DB_CONN: ${{ secrets.DB_CONN }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
       - name: Get dependencies
         run: npm ci
       - name: Serverless deploy

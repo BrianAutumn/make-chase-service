@@ -10,5 +10,8 @@ export const tokens = {
   },
   DB_CONN:{
     token:'###DB_CONN###'
+  },
+  GOOGLE_CLIENT_ID:{
+    token:'###GOOGLE_CLIENT_ID###'
   }
 }
