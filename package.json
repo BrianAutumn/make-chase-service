@@ -17,6 +17,7 @@
     "aws-sdk": "^2.1223.0",
     "copy-webpack-plugin": "^6.4.1",
     "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.3",
     "google-auth-library": "^7.14.1",
     "graphql": "^15.5.0",
     "graphql-subscriptions": "^2.0.0",

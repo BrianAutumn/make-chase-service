@@ -1,12 +1,11 @@
 'use strict';
 
-import {tokens} from "./tokens";
-
 import * as mongoose from "mongoose";
+import {appConf} from "./app-conf";
 
 let conn = null;
 
-const uri = tokens.dbConn;
+const uri = appConf.dbConn;
 
 export async function connect() {
   if (conn == null) {

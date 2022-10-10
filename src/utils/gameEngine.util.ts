@@ -1,7 +1,7 @@
 import {Board, BoardModel, Role} from "../data-models";
 import {cloneDeep, shuffle} from "lodash";
 import {readFileSync} from "fs";
-import {appConf} from "../appConf";
+import {appConf} from "../app-conf";
 import {join} from "path";
 import {getConnectedNodes} from "./board.utils";
 import {generateMap} from "./map-generation/map-generator.util";
