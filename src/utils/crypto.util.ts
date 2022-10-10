@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js';
-import {appConf} from "../tokens";
+import {appConf} from "../app-conf";
 
 export function encrypt(value) {
   return CryptoJS.AES.encrypt(value, appConf.encryptionKey).toString();

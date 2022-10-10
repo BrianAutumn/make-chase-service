@@ -84,7 +84,7 @@ const server = new Server({
   subscriptions: {
     onConnect(messagePayload, connection, event, context) {
       let currentUser;
-      if (messagePayload.authToken) {
+      if (messagePayload.authToken && messagePayload.authToken !== 'undefined') {
         try {
           currentUser = decrypt(messagePayload.authToken)
         } catch (e) {
