@@ -7,12 +7,12 @@ export function getToken(name){
   if(!tokens[name]){
     throw `Token '${name}' not defined!`
   }
-  if(isSet(tokens[name].token) || !process.env[name]){
+  if(isSet(tokens[name].token,name) || !process.env[name]){
     return tokens[name].token
   }
   return process.env[name];
 }
 
-function isSet(tokenValue){
-  return !tokenValue.startsWith('##') && !tokenValue.endsWith('##')
+function isSet(tokenValue, name){
+  return tokenValue !== `##${name}##`
 }
