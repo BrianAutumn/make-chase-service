@@ -15,7 +15,7 @@ type ValidateJWTResult = {
 export async function validateJWT(jwt: any): Promise<ValidateJWTResult> {
   try {
     if (jwt.clientId !== appConf.google.clientId) {
-      console.error(`Invalid ClientID! ${jwt.clientId}`)
+      console.error(`Invalid ClientID! '${jwt.clientId}' '${appConf.google.clientId}'`)
       return {success: false};
     }
     const ticket = await client.verifyIdToken({
