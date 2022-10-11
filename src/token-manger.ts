@@ -3,6 +3,9 @@ import * as dotenv from 'dotenv'
 
 dotenv.config()
 
+//Stupid workaround for the token replacement mechanism
+const tokenDeliminator = '#'
+
 export function getToken(name){
   if(!tokens[name]){
     throw `Token '${name}' not defined!`
@@ -14,5 +17,5 @@ export function getToken(name){
 }
 
 function isSet(tokenValue, name){
-  return tokenValue !== `##${name}##`
+  return tokenValue !== (tokenDeliminator + tokenDeliminator + name + tokenDeliminator + tokenDeliminator)
 }
