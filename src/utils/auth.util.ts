@@ -24,7 +24,7 @@ export async function validateJWT(jwt: any): Promise<ValidateJWTResult> {
       audience: jwt.clientId
     });
     const payload = ticket.getPayload();
-    console.log('payload',jwt)
+    console.log('payload',payload)
     let user = await UserModel.findOne({sub: payload.sub, iss: payload.iss});
     if (!user) {
       user = new UserModel();
