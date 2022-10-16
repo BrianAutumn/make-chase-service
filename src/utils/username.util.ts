@@ -7,6 +7,7 @@ let adjectives = generateMap(readFileSync(join(appConf.resources, 'Adjectives.tx
 
 export function generateName(first = selectRandomKey(adjectives), last = selectRandomKey(animals)) {
   console.log(animals,adjectives);
+  console.log('Flag AAA',last[0].toLowerCase())
   let animal = selectRandom(animals[last[0].toLowerCase()]);
   let adjective = selectRandom(adjectives[first[0].toLowerCase()]);
   return capitalize(adjective) + capitalize(animal);
@@ -28,6 +29,7 @@ function generateMap(string) {
 }
 
 function selectRandom(array) {
+  console.log('Flag AA', array)
   return array[Math.floor(Math.random() * array.length)]
 }
 
