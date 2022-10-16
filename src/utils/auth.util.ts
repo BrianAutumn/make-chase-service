@@ -14,6 +14,7 @@ type ValidateJWTResult = {
 
 export async function validateJWT(jwt: any): Promise<ValidateJWTResult> {
   try {
+    console.log('JWT',jwt)
     if (jwt.clientId !== appConf.google.clientId) {
       console.error(`Invalid ClientID! '${jwt.clientId}' '${appConf.google.clientId}'`)
       return {success: false};
@@ -23,6 +24,7 @@ export async function validateJWT(jwt: any): Promise<ValidateJWTResult> {
       audience: jwt.clientId
     });
     const payload = ticket.getPayload();
+    console.log('payload',jwt)
     let user = await UserModel.findOne({sub: payload.sub, iss: payload.iss});
     if (!user) {
       user = new UserModel();
