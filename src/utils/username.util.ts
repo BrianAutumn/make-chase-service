@@ -15,12 +15,12 @@ export function generateName(first = selectRandomKey(adjectives), last = selectR
 
 function generateMap(string) {
   let map = {}
-  string.split('\r\n').forEach(word => {
+  string.split('\n').forEach(word => {
     word.toLowerCase();
     if (!map[word[0]]) {
       map[word[0]] = new Set();
     }
-    map[word[0]].add(word.replace('\n',''))
+    map[word[0]].add(word.replace('\r',''))
   })
   Object.keys(map).forEach(key => {
     map[key] = Array.from(map[key])
