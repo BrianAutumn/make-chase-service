@@ -6,7 +6,7 @@ let animals = generateMap(readFileSync(join(appConf.resources, 'Animals.txt')).t
 let adjectives = generateMap(readFileSync(join(appConf.resources, 'Adjectives.txt')).toString());
 
 export function generateName(first = selectRandomKey(adjectives), last = selectRandomKey(animals)) {
-  console.log(animals,adjectives);
+  console.log(JSON.stringify(animals),JSON.stringify(adjectives));
   console.log('Flag AAA',last[0].toLowerCase())
   let animal = selectRandom(animals[last[0].toLowerCase()]);
   let adjective = selectRandom(adjectives[first[0].toLowerCase()]);
@@ -20,7 +20,7 @@ function generateMap(string) {
     if (!map[word[0]]) {
       map[word[0]] = new Set();
     }
-    map[word[0]].add(word)
+    map[word[0]].add(word.replace('\n',''))
   })
   Object.keys(map).forEach(key => {
     map[key] = Array.from(map[key])
