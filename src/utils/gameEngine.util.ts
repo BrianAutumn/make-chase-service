@@ -155,7 +155,6 @@ function commitBlockAction(board: Board, targetConnection: Array<string>) {
 function fetchRoles(roles: Array<Role>, userId: string) {
   let foundRoles = [];
   for (let role of roles) {
-    console.log('role log', role.user._id.toString(), userId)
     if (role.user._id.toString() === userId) {
       foundRoles.push(role.role)
     }
