@@ -38,8 +38,8 @@ export default {
       //   let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
       //   return removeMetadata(viewFilter(rootValue.board, roles));
       // },
-      resolve: () => {
-        return {}
+      resolve: (rootValue, {}, {}) => {
+        return rootValue.board
       },
       subscribe: withFilter(
         pubSub.subscribe('BOARD_UPDATE'),
