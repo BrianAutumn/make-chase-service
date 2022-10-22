@@ -32,11 +32,14 @@ export default {
   },
   Subscription: {
     boardUpdates: {
-      resolve: (rootValue, {}, {currentUser}) => {
-        console.log('board update log')
-        let userId = JSON.parse(currentUser).id
-        let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
-        return removeMetadata(viewFilter(rootValue.board, roles));
+      // resolve: (rootValue, {}, {currentUser}) => {
+      //   console.log('board update log')
+      //   let userId = JSON.parse(currentUser).id
+      //   let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
+      //   return removeMetadata(viewFilter(rootValue.board, roles));
+      // },
+      resolve: () => {
+        return {}
       },
       subscribe: withFilter(
         pubSub.subscribe('BOARD_UPDATE'),
