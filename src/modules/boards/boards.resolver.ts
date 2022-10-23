@@ -39,7 +39,7 @@ export default {
       //   return removeMetadata(viewFilter(rootValue.board, roles));
       // },
       resolve: (rootValue, {}, {currentUser}) => {
-        let userId = JSON.parse(currentUser).id
+        let userId = currentUser.id
         let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
         return viewFilter(rootValue.board, roles);
       },
