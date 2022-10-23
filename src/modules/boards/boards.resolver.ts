@@ -38,10 +38,10 @@ export default {
       //   let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
       //   return removeMetadata(viewFilter(rootValue.board, roles));
       // },
-      resolve: (rootValue, {}, {currentUser}) => {
-        let userId = JSON.parse(currentUser).id
-        let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
-        return roles;
+      resolve: (rootValue, {}, {}) => {
+        // let userId = JSON.parse(currentUser).id
+        // let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
+        return viewFilter(rootValue.board, []);
       },
       subscribe: withFilter(
         pubSub.subscribe('BOARD_UPDATE'),
