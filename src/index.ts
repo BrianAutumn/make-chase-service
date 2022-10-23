@@ -82,7 +82,7 @@ const server = new Server({
     };
   },
   subscriptions: {
-    onConnect(messagePayload, connection, event, context) {
+    onConnect(messagePayload, connection, event, context:any) {
       let currentUser;
       if (messagePayload.authToken && messagePayload.authToken !== 'undefined') {
         try {
