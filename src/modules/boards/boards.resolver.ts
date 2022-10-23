@@ -33,7 +33,7 @@ export default {
   Subscription: {
     boardUpdates: {
       resolve: (rootValue, {}, {currentUser}) => {
-        console.log('board update log')
+        console.log('board update log:', currentUser)
         let userId = JSON.parse(currentUser).id
         console.log('user Id:',userId)
         let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
