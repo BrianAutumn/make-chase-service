@@ -13,7 +13,7 @@ export default {
       await board.populate('roles.user')
       await makeActions(board, actions, currentUser.id);
       boardObject.save();
-      if(board.victory){
+      if (board.victory) {
         await completeGame(gameId)
       }
       console.log('push board update log:', JSON.stringify(boardObject));
@@ -38,8 +38,10 @@ export default {
       //   let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
       //   return removeMetadata(viewFilter(rootValue.board, roles));
       // },
-      resolve: (rootValue, {}, {}) => {
-        return rootValue.board
+      resolve: (rootValue, {}, {currentUser}) => {
+        let userId = JSON.parse(currentUser).id
+        let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
+        return viewFilter(rootValue.board, roles);
       },
       subscribe: withFilter(
         pubSub.subscribe('BOARD_UPDATE'),
