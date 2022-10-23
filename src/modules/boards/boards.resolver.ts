@@ -39,9 +39,9 @@ export default {
       //   return removeMetadata(viewFilter(rootValue.board, roles));
       // },
       resolve: (rootValue, {}, {currentUser}) => {
-        let userId = currentUser.id
+        let userId = JSON.parse(currentUser).id
         let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
-        return viewFilter(rootValue.board, roles);
+        return roles;
       },
       subscribe: withFilter(
         pubSub.subscribe('BOARD_UPDATE'),
