@@ -41,7 +41,7 @@ export default {
       resolve: (rootValue, {}, {}) => {
         // let userId = JSON.parse(currentUser).id
         // let roles = rootValue.board.roles.filter(role => role.user._id.toString() === userId).map(role => role.role);
-        return viewFilter(rootValue.board, []);
+        return undefined
       },
       subscribe: withFilter(
         pubSub.subscribe('BOARD_UPDATE'),
