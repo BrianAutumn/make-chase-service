@@ -32,7 +32,9 @@ export default {
   },
   Subscription: {
     boardUpdates: {
-      resolve: (rootValue, {}, {currentUser}) => {
+      resolve: (rootValue, {}, context) => {
+        console.log('context:',context);
+        let currentUser = context.currentUser;
         console.log('board update log:', currentUser)
         let userId = JSON.parse(currentUser).id
         console.log('user Id:',userId)
