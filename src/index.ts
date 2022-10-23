@@ -91,6 +91,7 @@ const server = new Server({
           throw new AuthenticationError('Session Invalid')
         }
       }
+      context.currentUser = currentUser;
       return {currentUser};
     }
   }
