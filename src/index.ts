@@ -82,18 +82,16 @@ const server = new Server({
     };
   },
   subscriptions: {
-    onConnect(messagePayload, connection, event, context:any) {
-      throw 'this is an error!'
-      // let currentUser;
-      // if (messagePayload.authToken && messagePayload.authToken !== 'undefined') {
-      //   try {
-      //     currentUser = decrypt(messagePayload.authToken)
-      //   } catch (e) {
-      //     throw new AuthenticationError('Session Invalid')
-      //   }
-      // }
-      // context.currentUser = currentUser;
-      // return {currentUser};
+    onWebsocketConnect(messagePayload, connection, event, context:any) {
+      let currentUser;
+      if (messagePayload.authToken && messagePayload.authToken !== 'undefined') {
+        try {
+          currentUser = decrypt(messagePayload.authToken)
+        } catch (e) {
+          throw new AuthenticationError('Session Invalid')
+        }
+      }
+      return {currentUser};
     }
   }
 });
