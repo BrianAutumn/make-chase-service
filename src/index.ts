@@ -84,7 +84,7 @@ const server = new Server({
   },
   subscriptions: {
     // @ts-ignore
-    onWebsocketConnect(messagePayload, connection, event, context:any) {
+    onConnect(messagePayload, connection, event, context:any) {
       let currentUser;
       console.log(`Session Connect Log: ${messagePayload.authToken}`)
       if (messagePayload.authToken && messagePayload.authToken !== 'undefined') {
