@@ -93,8 +93,6 @@ const server = new Server({
         } catch (e) {
           throw new AuthenticationError('Session Invalid')
         }
-      }else{
-        throw new AuthenticationError('No Session')
       }
       return {currentUser};
     }
