@@ -42,6 +42,7 @@ export default {
       if (!session) {
         throw new AuthenticationError('No Session')
       }
+      console.log(`Session Log: ${session}`)
       return session;
     },
     async me(rootValue: any, args, {currentUser}): Promise<User> {

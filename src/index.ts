@@ -52,6 +52,7 @@ const server = new Server({
   eventProcessor: new DynamoDBEventProcessor(),
   schema,
   plugins: [{
+    // @ts-ignore
     requestDidStart(){
       return {
         willSendResponse(requestContext) {
@@ -82,6 +83,7 @@ const server = new Server({
     };
   },
   subscriptions: {
+    // @ts-ignore
     onWebsocketConnect(messagePayload, connection, event, context:any) {
       let currentUser;
       if (messagePayload.authToken && messagePayload.authToken !== 'undefined') {
