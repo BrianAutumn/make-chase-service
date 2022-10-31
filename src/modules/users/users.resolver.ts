@@ -35,17 +35,14 @@ export default {
   Query: {
     async session(rootValue: any, args, context): Promise<string> {
       let session;
-      console.log(`context log:`, context)
-      console.log(`event log:`, context?.event)
-      console.log(`headers log:`, context?.event?.headers)
       try {
-        session = decodeURIComponent(context?.event?.headers?.cookie?.match(/(?<=session=).*?(?=$| |;)/g)[0])
+        let cookie = context?.event?.headers?.cookie || context?.event?.headers?.Cookie
+        session = cookie?.match(/(?<=session=).*?(?=$| |;)/g)[0])
       } finally {
       }
       if (!session) {
         throw new AuthenticationError('No Session')
       }
-      console.log(`Session Log: ${session}`)
       return session;
     },
     async me(rootValue: any, args, {currentUser}): Promise<User> {
