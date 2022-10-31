@@ -86,12 +86,15 @@ const server = new Server({
     // @ts-ignore
     onWebsocketConnect(messagePayload, connection, event, context:any) {
       let currentUser;
+      console.log(`Session Connect Log: ${messagePayload.authToken}`)
       if (messagePayload.authToken && messagePayload.authToken !== 'undefined') {
         try {
           currentUser = decrypt(messagePayload.authToken)
         } catch (e) {
           throw new AuthenticationError('Session Invalid')
         }
+      }else{
+        throw new AuthenticationError('No Session')
       }
       return {currentUser};
     }
