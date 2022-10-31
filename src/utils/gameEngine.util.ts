@@ -150,6 +150,11 @@ function commitBlockAction(board: Board, targetConnection: Array<string>) {
   let unconnectedNodes = new Set(board.nodes.map(node => node.label));
   chaserConnected.forEach(node => unconnectedNodes.delete(node))
   unconnectedNodes.forEach(nodeLabel => board.nodes.find(node => node.label === nodeLabel).state.push('BLOCKED'))
+  board.connections.forEach(connection => {
+    if(connection.nodes.every(node => unconnectedNodes.has(node))){
+      connection.state.push('BLOCKED')
+    }
+  })
 }
 
 function fetchRoles(roles: Array<Role>, userId: string) {
